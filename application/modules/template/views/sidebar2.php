@@ -19,7 +19,8 @@ $menu = $this->db->query($queryMenu)->result_array();
             <a class="navbar-brand mt-2" href="<?= base_url('auth'); ?>">
                 <div class="row ml-4">
                     <!-- <img src="<?= base_url(); ?>assets/img/logo.png" class="navbar-brand-img" alt="..."> -->
-                    <h3 class="text-primary">M O S</strong></h3>
+                    <h3 class="text-primary">A C N P</strong></h3>
+                    <h6 class="text-primary">Advanced Cardiac Nursing Program</strong></h6>
                 </div>
             </a>
             <div class="ml-auto">
