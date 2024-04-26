@@ -202,5 +202,12 @@
             $query = $this->db->get('konten_edukasi');
             return $query->result();
         }
+
+        public function fetch_single_target($id)
+        {
+            $this->db->where('id', $id);
+            $query = $this->db->get('pernyataan_target');
+            return $query->result();
+        }
     }
     ?>

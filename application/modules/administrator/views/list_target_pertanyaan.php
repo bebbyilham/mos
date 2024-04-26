@@ -7,7 +7,7 @@
                       <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
                   </div>
                   <div class="col-lg-6 col-5 text-right">
-                      <button type="button" id="tambah_pertanyaan_konten" class="btn btn-sm btn-neutral">Tambah</button>
+                      <button type="button" id="tambah_pertanyaan_target" class="btn btn-sm btn-neutral">Tambah</button>
                   </div>
               </div>
               <!-- Card stats -->
@@ -30,15 +30,15 @@
           <div class="col">
               <div class="card shadow-sm">
                   <div class="card-header">
-                      <h3 class="card-title">Daftar pertanyaan</h3>
+                      <h3 class="card-title">Daftar Pertanyaan Target</h3>
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_konten_edukasi_pertanyaan" class="table table-hover table-sm display">
+                          <table id="tabel_target_pertanyaan" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
-                                      <th style="width: 25%;">Konten</th>
+                                      <th style="width: 25%;">Deskripsi</th>
                                       <th style="width: 25%;">Keterangan</th>
                                       <th style="width: 10%;">Status</th>
                                       <th style="width: 10%;">Dibuat</th>
@@ -52,7 +52,7 @@
           </div>
       </div>
       <!-- Modal pertanyaan -->
-      <div class="modal fade" id="modal_pertanyaan_konten" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal fade" id="modal_pertanyaan_target" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
@@ -61,9 +61,9 @@
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <form method="post" id="form_konten_edukasi_pertanyaan">
+                  <form method="post" id="form_target_pertanyaan">
                       <div class="modal-body">
-                          <input type="hidden" name="id_list_edukasi" id="id_list_edukasi" value="<?php echo $id_konten_edukasi ?>">
+                          <input type="hidden" name="id_list_target" id="id_list_target" value="<?php echo $id_list_target ?>">
                           <div class="form-group">
                               <label class="form-control-label" for="input-last-name">Jenis</label>
                               <div class="input-group">
@@ -192,16 +192,16 @@
           $(document).ready(function() {
               $('#loading').hide();
               // DataTable
-              var dataTable = $('#tabel_konten_edukasi_pertanyaan').DataTable({
+              var dataTable = $('#tabel_target_pertanyaan').DataTable({
                   "serverSide": true,
                   "responsive": true,
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>administrator/tabelkontenedukasiPertanyaan",
+                      "url": "<?php echo base_url(); ?>administrator/tabellisttargetPertanyaan",
                       "type": "POST",
                       "data": function(data) {
-                          data.id_konten_edukasi = <?= $id_konten_edukasi; ?>
+                          data.id_list_target = <?= $id_list_target; ?>
                       },
 
                   },
@@ -221,14 +221,14 @@
 
 
               // pertanyaan
-              $('#tambah_pertanyaan_konten').on('click', function() {
+              $('#tambah_pertanyaan_target').on('click', function() {
 
-                  $('#modal_pertanyaan_konten').modal('show');
+                  $('#modal_pertanyaan_target').modal('show');
                   $('.modal-title').text('Tambah Data');
               });
 
               //submit pertanyaan
-              $(document).on('submit', '#form_konten_edukasi_pertanyaan', function(event) {
+              $(document).on('submit', '#form_target_pertanyaan', function(event) {
                   event.preventDefault();
                   var id = $(this).attr('id');
                   var jenis = $('#jenis').val();
@@ -246,7 +246,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/simpankontenedukasiPertanyaan',
+                              url: '<?php echo base_url(); ?>administrator/simpanlisttargetPertanyaan',
                               method: 'POST',
                               data: new FormData(this),
                               contentType: false,
@@ -259,8 +259,8 @@
                                       timer: 2000
                                   })
                                   dataTable.ajax.reload();
-                                  $('#modal_pertanyaan_konten').modal('hide');
-                                  $('#form_konten_edukasi_pertanyaan')[0].reset();
+                                  $('#modal_pertanyaan_target').modal('hide');
+                                  $('#form_target_pertanyaan')[0].reset();
                               }
                           });
                       }
@@ -282,7 +282,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/ubahstatuskontenedukasi',
+                              url: '<?php echo base_url(); ?>administrator/ubahstatustargetpertanyaan',
                               method: 'POST',
                               data: {
                                   id: id,
@@ -513,7 +513,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/ubahstatuspertanyaan',
+                              url: '<?php echo base_url(); ?>administrator/ubahstatustargetpertanyaan',
                               method: 'POST',
                               data: {
                                   id: id,

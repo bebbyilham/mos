@@ -2054,4 +2054,285 @@ class Administrator extends MX_Controller
         $this->Admin_model->ubah_status_pertanyaan($data, $_POST['id']);
         echo json_encode($data);
     }
+
+    public function pernyataanTarget()
+    {
+        $data['title'] = 'Pernyataan Target';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'administrator/pernyataan_target';
+        // echo modules::run('template/loadview', $data);
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function tambahpernyataantarget()
+    {
+        $data['title'] = 'Pernyataan Target';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'administrator/tambah_pernyataan_target';
+        // echo modules::run('template/loadview', $data);
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function simpanpernyataantarget()
+    {
+        $data = array(
+            'target'            => $_POST['target'],
+            'jenis'        => $_POST['jenis'],
+            'urutan'     => $_POST['urutan'],
+            'status'          => $_POST['status'],
+            'description'     => $_POST['description'],
+            'user_created'     => $this->session->userdata('pegawai_id'),
+        );
+
+        $this->Admin_model->simpan_pernyataantarget($data);
+        echo json_encode($data);
+    }
+
+    public function tabelpernyataantarget()
+    {
+        $fetch_data = $this->Admin_model->make_datatables_pernyataantarget();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+            $sub_array[] = "<b>" . $row->target . "</b><br>" . strtoupper("$row->jenis");
+            $sub_array[] = substr($row->description, 0, 100);
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="1" class="dropdown-item ubahstatus">Draft</a>
+                            <a id="' . $row->id . '" status="2" class="dropdown-item ubahstatus">Published</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-secondary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="draft" class="dropdown-item ubahstatus">Draft</a>
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="non aktif" class="dropdown-item ubahstatus">Non Aktif</a>
+                        </div>
+                </div>';
+            }
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="Diunggah" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            $sub_array[] = '
+            <a href="#" class="fa fa-images ml-2 mr-2 target" id="' . $row->id . '" target="' . $row->target . '" jenis="' . $row->jenis . '" data-toggle="modal" data-target="#staticBackdrop" title="Target"></a>
+            <a href="#" class="fa fa-info-circle ml-2 mr-2 info" id="' . $row->id . '" target="' . $row->target . '" jenis="' . $row->jenis . '" data-toggle="modal" data-target="#staticBackdrop" title="Info"></a>
+          ';
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Admin_model->get_all_data_pernyataantarget(),
+            "recordsFiltered"     => $this->Admin_model->get_filtered_data_pernyataantarget(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function infopernyataantarget()
+    {
+        $output = array();
+        $data = $this->Edukasi_model->fetch_single_target($_POST['id']);
+
+        foreach ($data as $row) {
+            $output['target'] = $row->target;
+            $output['description'] = $row->description;
+        }
+        echo json_encode($output);
+    }
+
+    public function kontentarget($id)
+    {
+        $data['title'] = 'Target';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+        $data['id_target'] = $id;
+
+        $data['content'] = '';
+        $page = 'administrator/konten_target';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function simpanlisttarget()
+    {
+        $data = array(
+            'id_target'            => $_POST['id_target'],
+            'link'            => $_POST['link'],
+            'jenis'        => $_POST['jenis'],
+            'urutan'     => $_POST['urutan'],
+            'status'          => $_POST['status'],
+            'keterangan'     => $_POST['keterangan'],
+        );
+
+        $this->Admin_model->simpan_list_target($data);
+        echo json_encode($data);
+    }
+
+    public function tabellisttarget()
+    {
+        $fetch_data = $this->Admin_model->make_datatables_list_pernyataan_target();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+            $sub_array[] = "<b>" . $row->link . "</b><br>" . strtoupper("$row->jenis");
+            $sub_array[] = substr($row->keterangan, 0, 100);
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="1" class="dropdown-item ubahstatus">Draft</a>
+                            <a id="' . $row->id . '" status="2" class="dropdown-item ubahstatus">Aktif</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-secondary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="draft" class="dropdown-item ubahstatus">Draft</a>
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="non aktif" class="dropdown-item ubahstatus">Non Aktif</a>
+                        </div>
+                </div>';
+            }
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="Diunggah" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span>';
+            $sub_array[] = '<a href="#" class="fas fa-question-circle fa-lg ml-2 mr-2 text-primary pertanyaan" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="Pertanyaan"></a>';
+
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Admin_model->get_all_data_list_pernyataan_target(),
+            "recordsFiltered"     => $this->Admin_model->get_filtered_data_list_pernyataan_target(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function ubahstatuslisttarget()
+    {
+        $data = array(
+            'status'            => $_POST['status'],
+        );
+
+        $this->Admin_model->ubah_status_list_pernyataan_target($data, $_POST['id']);
+        echo json_encode($data);
+    }
+
+    public function listtargetpertanyaan($id)
+    {
+        $data['title'] = 'Pertanyaan';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+        $data['id_list_target'] = $id;
+
+        $data['content'] = '';
+        $page = 'administrator/list_target_pertanyaan';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function simpanlisttargetPertanyaan()
+    {
+        $data = array(
+            'id_list_target'            => $_POST['id_list_target'],
+            'pertanyaan'            => $_POST['pertanyaan'],
+            'jenis'        => $_POST['jenis'],
+            'urutan'     => $_POST['urutan'],
+            'status'          => $_POST['status'],
+            'keterangan'     => $_POST['keterangan'],
+        );
+
+        $this->Admin_model->simpan_pertanyaan_target($data);
+        echo json_encode($data);
+    }
+
+    public function tabellisttargetPertanyaan()
+    {
+        $fetch_data = $this->Admin_model->make_datatables_target_pertanyaan();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+            $sub_array[] = "<b>" . $row->pertanyaan . "</b><br>" . strtoupper("$row->jenis");
+            $sub_array[] = substr($row->keterangan, 0, 25);
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="draft" class="dropdown-item statuspertanyaan">Draft</a>
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item statuspertanyaan">Aktif</a>
+                            <a id="' . $row->id . '" status="non aktif" class="dropdown-item statuspertanyaan">Non Aktif</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-secondary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="draft" class="dropdown-item statuspertanyaan">Draft</a>
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item statuspertanyaan">Aktif</a>
+                            <a id="' . $row->id . '" status="non aktif" class="dropdown-item statuspertanyaan">Non Aktif</a>
+                        </div>
+                </div>';
+            }
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="Diunggah" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span>';
+            $sub_array[] = '<a href="#" class="fas fa-clipboard-list fa-lg ml-2 mr-2 text-primary jawaban" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="Jawaban"></a> <a href="#" class="fas fa-clipboard-check fa-lg ml-2 mr-2 text-primary jawaban_betul" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="Jawaban Betul"></a>';
+
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Admin_model->get_all_data_target_pertanyaan(),
+            "recordsFiltered"     => $this->Admin_model->get_filtered_data_target_pertanyaan(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function ubahstatustargetpertanyaan()
+    {
+        $data = array(
+            'status'            => $_POST['status'],
+        );
+
+        $this->Admin_model->ubah_status_target_pertanyaan($data, $_POST['id']);
+        echo json_encode($data);
+    }
 }

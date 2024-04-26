@@ -6,27 +6,13 @@
           <div class="col-lg-6 col-7">
             <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
           </div>
-          <!-- <div class="col-lg-6 col-5 text-right">
-            <a href="<?php echo base_url(); ?>blog" class="tambah_blog btn btn-sm btn-neutral">Kembali</a>
-          </div> -->
+          <div class="col-lg-6 col-5 text-right">
+            <a href="<?php echo base_url(); ?>edukasi" class="tambah_edukasi btn btn-sm btn-neutral">Kembali</a>
+          </div>
         </div>
         <!-- Card stats -->
         <div class="row">
-          <?php
-          $birthDate = new DateTime($pasien['tanggal_lahir']);
-          $today = new DateTime("today");
-          if ($birthDate > $today) {
-            exit("0 tahun 0 bulan 0 hari");
-          }
-          $y = $today->diff($birthDate)->y;
-          $m = $today->diff($birthDate)->m;
-          $d = $today->diff($birthDate)->d;
-          if ($pasien['jenis_kelamin'] == 1) {
-            $jk = 'Laki-laki';
-          } else {
-            $jk = 'Perempuan';
-          }
-          ?>
+
 
 
 
@@ -41,61 +27,75 @@
           <div class="card-header">
             <div class="row align-items-center">
               <div class="col-8">
-                <h3 class="mb-0"><?= $pasien['nama'] ?></h3><span><?= '(' . $jk . ' - ' . $y . ' Tahun ' . $m . ' Bulan ' . $d . ' Hari)' ?></span>
+                <h3 class="mb-0">Tambah Data</h3>
               </div>
               <div class="col-4 text-right">
-                <button type="button" id="simpan_rawatan" class="btn btn-sm btn-primary">Simpan</button>
+                <button type="button" id="simpan_edukasi" class="btn btn-sm btn-primary">Simpan</button>
               </div>
             </div>
           </div>
           <div class="card-body">
             <form>
-              <h6 class="heading-small text-muted mb-4">Data Pasien</h6>
+              <h6 class="heading-small text-muted mb-4">Pernyataan Target</h6>
               <div class="pl-lg-4">
                 <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="nama">Diagnosa</label>
-                      <input type="text" id="diagnosa_sakit" name="diagnosa_sakit" class="form-control" placeholder="Diagnosa Sakit">
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <label class="form-control-label" for="nama">Tanggal Rawatan</label>
-                    <input type="text" class="form-control" id="tgl_awal_rawatan" name="tgl_awal_rawatan" placeholder="Pilih Tanggal..." value="<?= date('Y-m-d') ?>" autocomplete="off">
-                  </div>
-                </div>
-                <!-- <div class="row">
                   <div class="col-lg-12">
                     <div class="form-group">
-                      <label class="form-control-label" for="nama">Alergi</label>
-                      <textarea class="form-control" id="alergi" rows="3"></textarea>
+                      <label class="form-control-label" for="target">Target</label>
+                      <input type="text" id="target" name="target" class="form-control" placeholder="target">
                     </div>
                   </div>
-                </div> -->
+
+                </div>
                 <div class="row">
-                  <!-- <div class="col-lg-6">
+                  <div class="col-lg-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="barthel_index_score">Barthel Index Score</label>
-                      <input type="text" class="form-control" id="barthel_index_score" name="barthel_index_score" placeholder="Total Skor" autocomplete="off">
+                      <label class="form-control-label" for="urutan">Urutan</label>
+                      <input type="number" id="urutan" name="urutan" class="form-control" placeholder="Urutan Konten">
                     </div>
-                  </div> -->
-                  <div class="col-lg-6">
+                  </div>
+                  <div class="col-lg-4">
                     <div class="form-group">
-                      <label class="form-control-label" for="input-last-name">Waktu</label>
-                      <input type="text" class="form-control" id="barthel_index_score_date" name="barthel_index_score_date" placeholder="Pilih Tanggal..." value="<?= date('Y-m-d') ?>" autocomplete="off">
+                      <label class="form-control-label" for="input-last-name">Jenis</label>
+                      <div class="input-group">
+                        <select class="custom-select rounded-0" id="jenis" name="jenis">
+                          <option value="text">Text</option>
+                          <option value="video">Video</option>
+                          <option value="Gambar">Gambar</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label class="form-control-label" for="input-last-name">Status</label>
+                      <div class="input-group">
+                        <select class="custom-select rounded-0" id="status" name="status">
+                          <option value="draft">Draft</option>
+                          <option value="aktif">Aktif</option>
+                          <option value="non aktif">Non aktif</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
-
               </div>
-              <!-- <hr class="my-4" /> -->
+              <hr class="my-4" />
+              <!-- Description -->
+              <h6 class="heading-small text-muted mb-4">Deskripsi</h6>
+              <div class="pl-lg-4">
+                <div class="form-group">
+                  <label class="form-control-label" for="description">Isi Konten</label>
+                  <textarea class="form-control rounded-0" id="description" name="description" rows="6" placeholder="Catatan Hasil Pemeriksaan Keseluruhan"></textarea>
+                </div>
+              </div>
             </form>
           </div>
         </div>
       </div>
     </div>
     <!-- Modal Create User -->
-    <div class="modal fade" id="modal_tambah_blog" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="modal_tambah_edukasi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -111,8 +111,8 @@
                           <input type="hidden" name="action_modal" id="action_modal" value="edit">
                           <input type="hidden" name="nama_akun" id="nama_akun">
                           <div class="form-group">
-                              <label for="judul">Judul</label>
-                              <input type="text" class="form-control rounded-0" id="judul" name="judul" placeholder="Judul">
+                              <label for="target">target</label>
+                              <input type="text" class="form-control rounded-0" id="target" name="target" placeholder="target">
                           </div>
                           <div class="form-group">
                               <label for="password">Password</label>
@@ -137,22 +137,6 @@
     </div>
     <script>
       $(document).ready(function() {
-        $('#tgl_awal_rawatan').datetimepicker({
-          timepicker: false,
-          datepicker: true,
-          scrollInput: false,
-          theme: 'success',
-          format: 'Y-m-d',
-          maxDate: '+2y',
-        });
-        $('#barthel_index_score_date').datetimepicker({
-          timepicker: false,
-          datepicker: true,
-          scrollInput: false,
-          theme: 'success',
-          format: 'Y-m-d',
-          maxDate: '+2y',
-        });
         $('#loading').hide();
         //   $("#deskripsi").summernote('code', '');
         $('#description').summernote({
@@ -161,11 +145,12 @@
             ['fontsize', ['fontsize']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
+            ['insert', ['table']],
           ],
         });
 
         $.ajax({
-          url: "<?php echo base_url(); ?>blog/getAllCreators",
+          url: "<?php echo base_url(); ?>administrator/getAllCreators",
           method: "POST",
           dataType: 'JSON',
           success: function(data) {
@@ -181,36 +166,17 @@
           }
         });
         // DataTable
-        var dataTable = $('#tabel_blog').DataTable({
-          "serverSide": true,
-          "responsive": true,
-          "pageLength": 25,
-          "order": [],
-          "ajax": {
-            "url": "<?php echo base_url(); ?>blog/tabelblog",
-            "type": "POST",
-          },
-          columnDefs: [{
-            orderable: false,
-            targets: [0, 2, 5]
-          }],
-          autoWidth: !1,
-          language: {
-            search: "Cari"
-          },
-        });
+
 
         // Edit Pegawai
-        $('#simpan_rawatan').on('click', function() {
-          var id_pasien = '<?= $pasien['id'] ?>'
-          var tgl_awal_rawatan = $('#tgl_awal_rawatan').val()
-          var diagnosa_sakit = $('#diagnosa_sakit').val()
-          // var alergi = $('#alergi').val()
-          // var barthel_index_score = $('#barthel_index_score').val()
-          // var barthel_index_score_date = $('#barthel_index_score_date').val()
-          var status = '1';
+        $('#simpan_edukasi').on('click', function() {
+          var target = $('#target').val()
+          var jenis = $('#jenis').val()
+          var urutan = $('#urutan').val()
+          var description = $('#description').val()
+          var status = $('#status').val();
 
-          if (id_pasien == '' || tgl_awal_rawatan == '' || diagnosa_sakit == '') {
+          if (target == '' || jenis == '' || urutan == '' || urutan == '0' || description == '' || status == '') {
             console.log('data belum lengkap');
             Swal.fire({
               icon: 'error',
@@ -219,16 +185,13 @@
             });
           } else {
             $.ajax({
-              url: '<?php echo base_url(); ?>pasien/simpanrawatan',
+              url: '<?php echo base_url(); ?>administrator/simpanpernyataantarget',
               method: 'POST',
-              dataType: 'JSON',
               data: {
-                id_pasien: id_pasien,
-                tgl_awal_rawatan: tgl_awal_rawatan,
-                diagnosa_sakit: diagnosa_sakit,
-                // alergi: alergi,
-                // barthel_index_score: barthel_index_score,
-                // barthel_index_score_date: barthel_index_score_date,
+                target: target,
+                jenis: jenis,
+                urutan: urutan,
+                description: description,
                 status: status,
               },
               success: function(data) {
@@ -239,7 +202,7 @@
                   showConfirmButton: false,
                   timer: 1500
                 })
-                // window.location.href = "<?php base_url(); ?>pasien/pasienterdaftar";
+                window.location.href = "<?php base_url(); ?>pernyataantarget/";
               }
             });
           }

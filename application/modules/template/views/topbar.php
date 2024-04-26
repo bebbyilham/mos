@@ -1,6 +1,6 @@
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    <nav class="navbar navbar-top navbar-expand navbar-light bg-gradient-primary border-bottom">
+    <nav class="navbar navbar-top navbar-expand navbar-light bg-gradient-orange border-bottom">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 

@@ -7,7 +7,7 @@
                       <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
                   </div>
                   <div class="col-lg-6 col-5 text-right">
-                      <a href="<?php echo base_url(); ?>administrator/tambahedukasi" class="tambah_edukasi btn btn-sm btn-neutral">Tambah</a>
+                      <a href="<?php echo base_url(); ?>administrator/tambahpernyataantarget" class="tambah_edukasi btn btn-sm btn-neutral">Tambah</a>
                   </div>
               </div>
               <!-- Card stats -->
@@ -34,7 +34,7 @@
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_edukasi" class="table table-hover table-sm display">
+                          <table id="tabel_pernyataan_target" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
@@ -96,7 +96,7 @@
               </div>
           </div>
       </div>
-      <div class="modal fade" id="modal_info_edukasi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal fade" id="modal_info_pernyataan_target" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
@@ -117,13 +117,13 @@
           $(document).ready(function() {
               $('#loading').hide();
               // DataTable
-              var dataTable = $('#tabel_edukasi').DataTable({
+              var dataTable = $('#tabel_pernyataan_target').DataTable({
                   "serverSide": true,
                   "responsive": true,
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>administrator/tabeledukasi",
+                      "url": "<?php echo base_url(); ?>administrator/tabelpernyataantarget",
                       "type": "POST",
                   },
                   columnDefs: [{
@@ -136,28 +136,28 @@
                   },
               });
 
-              // konten edukasi
-              $(document).on('click', '.kontenedukasi', function() {
+              //target
+              $(document).on('click', '.target', function() {
                   var id = $(this).attr('id');
-                  window.open('<?= base_url(); ?>administrator/kontenedukasi/' + id);
+                  window.open('<?= base_url(); ?>administrator/kontentarget/' + id);
               });
 
               // info konten
-              $(document).on('click', '.infoedukasi', function() {
+              $(document).on('click', '.info', function() {
                   var id = $(this).attr('id');
-                  $('#modal_info_edukasi').modal('show');
+                  $('#modal_info_pernyataan_target').modal('show');
                   $(".data_info").html("");
 
 
                   $.ajax({
-                      url: '<?php echo base_url(); ?>administrator/infoedukasi',
+                      url: '<?php echo base_url(); ?>administrator/infopernyataantarget',
                       method: 'POST',
                       data: {
                           id: id
                       },
                       dataType: 'JSON',
                       success: function(data) {
-                          $('.modal-title').text(data.judul);
+                          $('.modal-title').text(data.target);
                           $('.data_info').append(`
                                <div>` + data.description + `</div>
                             `);

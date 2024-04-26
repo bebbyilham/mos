@@ -13,7 +13,7 @@
     $edk = $this->db->query($queryEdukasi)->result_array();
     ?>
   <!-- Header -->
-  <div class="header bg-gradient-primary pb-6">
+  <div class="header bg-gradient-orange pb-6">
       <div class="container-fluid">
           <div class="header-body">
               <div class="row align-items-center py-4">

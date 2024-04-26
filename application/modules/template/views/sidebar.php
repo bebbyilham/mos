@@ -19,7 +19,7 @@ $menu = $this->db->query($queryMenu)->result_array();
             <a class="navbar-brand mt-2" href="<?= base_url('auth'); ?>">
                 <div class="row ml-4">
                     <!-- <img src="<?= base_url(); ?>assets/img/logo.png" class="navbar-brand-img" alt="..."> -->
-                    <h3 class="text-primary">M O S</strong></h3>
+                    <h3 class="text-orange">M O S</strong></h3>
                 </div>
             </a>
             <div class="ml-auto">
@@ -47,7 +47,7 @@ $menu = $this->db->query($queryMenu)->result_array();
                         <li class="nav-item active">
                             <a class="nav-link " href="#navbar-<?php echo $m['id']; ?>" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-<?php echo $m['id']; ?>">
                                 <!-- <i class="<?php echo $m['icon']; ?>"></i> -->
-                                <i class="fas fa-dot-circle text-primary"></i>
+                                <i class="fas fa-dot-circle text-orange"></i>
                                 <span class="nav-link-text"><b><?= $m['menu']; ?></b></span>
                             </a>
 
@@ -71,7 +71,7 @@ $menu = $this->db->query($queryMenu)->result_array();
                                             <?php endif; ?>
 
                                             <a class="nav-link " href="<?= base_url($sm['url']); ?>">
-                                                <i class="text-primary <?php echo $sm['icon']; ?>"></i>
+                                                <i class="text-orange <?php echo $sm['icon']; ?>"></i>
                                                 <b><?= $sm['title']; ?></b>
                                             </a>
                                             </li>

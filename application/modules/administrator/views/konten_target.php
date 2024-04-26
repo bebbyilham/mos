@@ -7,7 +7,7 @@
                       <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
                   </div>
                   <div class="col-lg-6 col-5 text-right">
-                      <button type="button" id="tambah_akses_materi" class="btn btn-sm btn-neutral">Tambah</button>
+                      <button type="button" id="tambah_konten_target" class="btn btn-sm btn-neutral">Tambah</button>
                   </div>
               </div>
               <!-- Card stats -->
@@ -30,18 +30,19 @@
           <div class="col">
               <div class="card shadow-sm">
                   <div class="card-header">
-                      <h3 class="card-title">Akses Materi</h3>
+                      <h3 class="card-title">Target</h3>
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_konten_edukasi" class="table table-hover table-sm display">
+                          <table id="tabel_konten_target" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
-                                      <th style="width: 5%;"></th>
-                                      <th style="width: 25%;">Materi</th>
-                                      <th style="width: 25%;">Waktu Akses</th>
+                                      <th style="width: 25%;">Konten</th>
+                                      <th style="width: 25%;">Keterangan</th>
                                       <th style="width: 10%;">Status</th>
+                                      <th style="width: 10%;">Dibuat</th>
+                                      <th style="width: 10%;">#</th>
                                   </tr>
                               </thead>
                           </table>
@@ -51,7 +52,7 @@
           </div>
       </div>
       <!-- Modal Create User -->
-      <div class="modal fade" id="modal_akses_materi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal fade" id="modal_konten_target" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
@@ -60,14 +61,38 @@
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <form method="post" id="form_akses_materi">
+                  <form method="post" id="form_konten_edukasi">
                       <div class="modal-body">
                           <div class="form-group">
-                              <input type="hidden" name="id_user" id="id_user" value="<?php echo $user['id_user'] ?>">
-                              <input type="hidden" name="id_pasien" id="id_pasien" value="<?php echo $user['pasien_id'] ?>">
-                              <label class="form-control-label" for="input-last-name">Materi</label>
+                              <label class="form-control-label" for="input-last-name">Jenis</label>
                               <div class="input-group">
-                                  <select class="form-control rounded-0 selecpicker" id="materi" name="materi" data-live-search="true"></select>
+                                  <select class="custom-select rounded-0" id="jenis" name="jenis">
+                                      <option value="video">Video</option>
+                                      <option value="Gambar">Gambar</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <input type="hidden" name="id_target" id="id_target" value="<?php echo $id_target ?>">
+                              <label for="link">Link</label>
+                              <input type="text" id="link" name="link" class="form-control" placeholder="Isi link video/gambar">
+                          </div>
+                          <div class="form-group">
+                              <label for="keterangan">Keterangan</label>
+                              <input type="text" id="keterangan" name="keterangan" class="form-control" placeholder="Isi keterangan video/gambar">
+                          </div>
+                          <div class="form-group">
+                              <label for="urutan">Urutan</label>
+                              <input type="number" id="urutan" name="urutan" class="form-control" placeholder="Isi urutan video/gambar">
+                          </div>
+                          <div class="form-group">
+                              <label class="form-control-label" for="input-last-name">Status</label>
+                              <div class="input-group">
+                                  <select class="custom-select rounded-0" id="status" name="status">
+                                      <option value="draft">Draft</option>
+                                      <option value="aktif">Aktif</option>
+                                      <option value="non aktif">Non aktif</option>
+                                  </select>
                               </div>
                           </div>
                       </div>
@@ -84,22 +109,22 @@
           $(document).ready(function() {
               $('#loading').hide();
               // DataTable
-              var dataTable = $('#tabel_konten_edukasi').DataTable({
+              var dataTable = $('#tabel_konten_target').DataTable({
                   "serverSide": true,
                   "responsive": true,
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>edukasi/tabelkontenedukasi",
+                      "url": "<?php echo base_url(); ?>administrator/tabellisttarget",
                       "type": "POST",
                       "data": function(data) {
-                          data.id_user = <?= $user['id_user']; ?>
+                          data.id_target = <?= $id_target; ?>
                       },
 
                   },
                   columnDefs: [{
                       orderable: false,
-                      targets: [0, 1, 2]
+                      targets: [0, 1, 2, 4, 5]
                   }],
                   autoWidth: !1,
                   language: {
@@ -107,43 +132,23 @@
                   },
               });
 
-              $.ajax({
-                  url: "<?php echo base_url(); ?>edukasi/getAllmateris",
-                  method: "POST",
-                  dataType: 'JSON',
-                  success: function(data) {
-                      console.log(data);
-                      var html = '';
-                      var i;
-                      html += '<option selected value="0">Pilih Materi</option>';
-                      for (i = 0; i < data.length; i++) {
-                          html += '<option value="' + data[i].id + '">' + data[i].judul + '</option>';
-                      }
-                      $('#materi').html(html);
-                      $('#materi').selectpicker('refresh');
-                  }
-              });
 
-              // akses materi
-              $('#tambah_akses_materi').on('click', function() {
+              $('#tambah_konten_target').on('click', function() {
 
-                  $('#modal_akses_materi').modal('show');
+                  $('#modal_konten_target').modal('show');
                   $('.modal-title').text('Tambah File');
               });
 
-              $(document).on('click', '.akses_materi', function() {
-                  var id_akses_materi = $(this).attr('id');
-                  window.open('<?= base_url(); ?>edukasi/aksesmateri/' + id_akses_materi);
-              });
-
-              //submit image
-              $(document).on('submit', '#form_akses_materi', function(event) {
+              //submit konten
+              $(document).on('submit', '#form_konten_edukasi', function(event) {
                   event.preventDefault();
-                  materi = $('#materi').val();
+                  var id = $(this).attr('id');
+                  var jenis = $('#jenis').val();
+                  var link = $('#link').val();
 
                   Swal.fire({
                       title: 'Apakah Kamu Yakin?',
-                      text: "Akses materi" + materi,
+                      text: "Simpan konten",
                       icon: 'warning',
                       showCancelButton: true,
                       confirmButtonColor: '#3085d6',
@@ -153,7 +158,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>edukasi/simpanaksesmateri',
+                              url: '<?php echo base_url(); ?>administrator/simpanlisttarget',
                               method: 'POST',
                               data: new FormData(this),
                               contentType: false,
@@ -161,17 +166,23 @@
                               success: function(data) {
                                   Swal.fire({
                                       icon: 'success',
-                                      title: 'Data berhasil ditambahkan',
+                                      title: 'Foto berhasil ditambahkan',
                                       showConfirmButton: false,
                                       timer: 2000
                                   })
                                   dataTable.ajax.reload();
-                                  $('#modal_akses_materi').modal('hide');
-                                  $('#form_akses_materi')[0].reset();
+                                  $('#modal_konten_target').modal('hide');
+                                  $('#form_konten_edukasi')[0].reset();
                               }
                           });
                       }
                   })
+              });
+
+              // konten edukasi
+              $(document).on('click', '.pertanyaan', function() {
+                  var id = $(this).attr('id');
+                  window.open('<?= base_url(); ?>administrator/listtargetpertanyaan/' + id);
               });
 
               $(document).on("click", ".ubahstatus", function() {
@@ -189,7 +200,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/ubahstatuskontenedukasi',
+                              url: '<?php echo base_url(); ?>administrator/ubahstatuslisttarget',
                               method: 'POST',
                               data: {
                                   id: id,
