@@ -1882,4 +1882,340 @@ class Admin_model extends CI_Model
             $data
         );
     }
+
+    //tabel pernyataan jawaban
+    var $order_columnPJ = array(null, 'judul', null, 'status', 'created_at', null);
+    public function make_query_pernyataan_target_jawaban()
+    {
+        $this->db->select('*');
+        $this->db->where('id_pertanyaan', $_POST['id_pertanyaan']);
+        $this->db->from('jawaban_pernyataan_target');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('jawaban', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnPJ[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_pernyataan_target_jawaban()
+    {
+        $this->make_query_pernyataan_target_jawaban();
+
+        if ($_POST["length"] != -1) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_pernyataan_target_jawaban()
+    {
+        $this->make_query_pernyataan_target_jawaban();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_pernyataan_target_jawaban()
+    {
+        $this->db->select("*");
+        $this->db->from('jawaban_pernyataan_target');
+        return $this->db->count_all_results();
+    }
+    //end pernyataan jawaban
+
+    // pernyataan jawaban
+    public function simpan_list_pernyataan_target_jawaban($data)
+    {
+        $this->db->insert('jawaban_pernyataan_target', $data);
+    }
+    public function ubah_status_pernyataan_target_jawaban($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'jawaban_pernyataan_target',
+            $data
+        );
+    }
+
+    public function fetch_all_jawaban_pernyataan($id)
+    {
+        $this->db->where('id_pertanyaan', $id);
+        $query = $this->db->get('jawaban_pernyataan_target');
+        return $query->result();
+    }
+
+    public function simpan_jawaban_betul_pernyataan($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'pertanyaan_target',
+            $data
+        );
+    }
+
+    public function simpan_self_control($data)
+    {
+        $this->db->insert('self_control', $data);
+    }
+
+    //tabel selfcontrol
+    var $order_columnSC = array(null, 'judul', null, 'status', 'created_at', null);
+    public function make_query_selfcontrol()
+    {
+        // $id_pasien = $_POST['idpasien'];
+        $this->db->select('*');
+        // $this->db->where('jenis_layanan', 2);
+        $this->db->from('self_control');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('deskripsi', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnSC[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_selfcontrol()
+    {
+        $this->make_query_selfcontrol();
+
+        if ($_POST["length"] != -1) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_selfcontrol()
+    {
+        $this->make_query_selfcontrol();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_selfcontrol()
+    {
+        $this->db->select("*");
+        $this->db->from('self_control');
+        return $this->db->count_all_results();
+    }
+    //end selfcontrol
+
+    public function simpan_list_selfcontrol($data)
+    {
+        $this->db->insert('list_selfcontrol', $data);
+    }
+
+    //tabel lsit target
+    var $order_columnLS = array(
+        null, 'judul', null, 'status', 'created_at', null
+    );
+    public function make_query_list_selfcontrol()
+    {
+        $this->db->select('*');
+        $this->db->where('id_selfcontrol', $_POST['id_metode']);
+        $this->db->from('list_selfcontrol');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('keterangan', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnLS[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_list_selfcontrol()
+    {
+        $this->make_query_list_selfcontrol();
+
+        if ($_POST["length"] != -1) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_list_selfcontrol()
+    {
+        $this->make_query_list_selfcontrol();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_list_selfcontrol()
+    {
+        $this->db->select("*");
+        $this->db->from('list_selfcontrol');
+        return $this->db->count_all_results();
+    }
+    //end edukasi
+
+    public function ubah_status_list_selfcontrol($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'list_selfcontrol',
+            $data
+        );
+    }
+
+    //tabel selfcontrol pertanyaan
+    var $order_columnSP = array(
+        null, 'judul', null, 'status', 'created_at', null
+    );
+    public function make_query_selfcontrol_pertanyaan()
+    {
+        $this->db->select('*');
+        $this->db->where('id_list_selfcontrol', $_POST['id_list_selfcontrol']);
+        $this->db->from('pertanyaan_selfcontrol');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('pertanyaan', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnSP[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_selfcontrol_pertanyaan()
+    {
+        $this->make_query_selfcontrol_pertanyaan();
+
+        if ($_POST["length"] != -1) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_selfcontrol_pertanyaan()
+    {
+        $this->make_query_selfcontrol_pertanyaan();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_selfcontrol_pertanyaan()
+    {
+        $this->db->select("*");
+        $this->db->from('pertanyaan_selfcontrol');
+        return $this->db->count_all_results();
+    }
+    //end target pertanyaan
+
+    public function ubah_status_selfcontrol_pertanyaan($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'pertanyaan_selfcontrol',
+            $data
+        );
+    }
+
+    public function simpan_pertanyaan_selfcontrol($data)
+    {
+        $this->db->insert('pertanyaan_selfcontrol', $data);
+    }
+    public function ubah_status_pertanyaan_selfcontrol($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'pertanyaan_selfcontrol',
+            $data
+        );
+    }
+
+    //tabel selfcontrol jawaban
+    var $order_columnSJ = array(null, 'judul', null, 'status', 'created_at', null);
+    public function make_query_self_control_jawaban()
+    {
+        $this->db->select('*');
+        $this->db->where('id_pertanyaan', $_POST['id_pertanyaan']);
+        $this->db->from('jawaban_self_control');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('jawaban', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnSJ[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_self_control_jawaban()
+    {
+        $this->make_query_self_control_jawaban();
+
+        if ($_POST["length"] != -1) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_self_control_jawaban()
+    {
+        $this->make_query_self_control_jawaban();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_self_control_jawaban()
+    {
+        $this->db->select("*");
+        $this->db->from('jawaban_self_control');
+        return $this->db->count_all_results();
+    }
+    //end selfcontrol jawaban
+
+    // selfcontrol jawaban
+    public function simpan_list_self_control_jawaban($data)
+    {
+        $this->db->insert('jawaban_self_control', $data);
+    }
+    public function ubah_status_self_control_jawaban($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'jawaban_self_control',
+            $data
+        );
+    }
+
+    public function fetch_all_jawaban_self_control($id)
+    {
+        $this->db->where('id_pertanyaan', $id);
+        $query = $this->db->get('jawaban_self_control');
+        return $query->result();
+    }
+
+    public function simpan_jawaban_betul_self_control($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'pertanyaan_selfcontrol',
+            $data
+        );
+    }
 }

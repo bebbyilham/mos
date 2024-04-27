@@ -30,11 +30,11 @@
           <div class="col">
               <div class="card shadow-sm">
                   <div class="card-header">
-                      <h3 class="card-title">Daftar Pertanyaan Target</h3>
+                      <h3 class="card-title">Daftar Pertanyaan</h3>
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_target_pertanyaan" class="table table-hover table-sm display">
+                          <table id="tabel_pertanyaan" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
@@ -61,9 +61,9 @@
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <form method="post" id="form_target_pertanyaan">
+                  <form method="post" id="form_selfcontrol_pertanyaan">
                       <div class="modal-body">
-                          <input type="hidden" name="id_list_target" id="id_list_target" value="<?php echo $id_list_target ?>">
+                          <input type="hidden" name="id_list_selfcontrol" id="id_list_selfcontrol" value="<?php echo $id_list_selfcontrol ?>">
                           <div class="form-group">
                               <label class="form-control-label" for="input-last-name">Jenis</label>
                               <div class="input-group">
@@ -116,7 +116,7 @@
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <form method="post" id="form_pernyataan_jawaban">
+                  <form method="post" id="form_selfcontrol_jawaban">
                       <div class="modal-body">
                           <input type="hidden" name="id_pertanyaan" id="id_pertanyaan">
                           <div class="form-group">
@@ -142,7 +142,7 @@
                   </form>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_pernyataan_jawaban" class="table table-hover table-sm display">
+                          <table id="tabel_selfcontrol_jawaban" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
@@ -192,16 +192,16 @@
           $(document).ready(function() {
               $('#loading').hide();
               // DataTable
-              var dataTable = $('#tabel_target_pertanyaan').DataTable({
+              var dataTable = $('#tabel_pertanyaan').DataTable({
                   "serverSide": true,
                   "responsive": true,
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>administrator/tabellisttargetPertanyaan",
+                      "url": "<?php echo base_url(); ?>administrator/tabellistselfcontrolPertanyaan",
                       "type": "POST",
                       "data": function(data) {
-                          data.id_list_target = <?= $id_list_target; ?>
+                          data.id_list_selfcontrol = <?= $id_list_selfcontrol; ?>
                       },
 
                   },
@@ -228,7 +228,7 @@
               });
 
               //submit pertanyaan
-              $(document).on('submit', '#form_target_pertanyaan', function(event) {
+              $(document).on('submit', '#form_selfcontrol_pertanyaan', function(event) {
                   event.preventDefault();
                   var id = $(this).attr('id');
                   var jenis = $('#jenis').val();
@@ -246,7 +246,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/simpanlisttargetPertanyaan',
+                              url: '<?php echo base_url(); ?>administrator/simpanlistselfcontrolPertanyaan',
                               method: 'POST',
                               data: new FormData(this),
                               contentType: false,
@@ -260,7 +260,7 @@
                                   })
                                   dataTable.ajax.reload();
                                   $('#modal_pertanyaan_target').modal('hide');
-                                  $('#form_target_pertanyaan')[0].reset();
+                                  $('#form_selfcontrol_pertanyaan')[0].reset();
                               }
                           });
                       }
@@ -272,7 +272,7 @@
                   let status = $(this).attr('status')
                   Swal.fire({
                       title: 'Apakah Kamu Yakin?',
-                      text: "Upload file nilai ini?",
+                      text: "",
                       icon: 'warning',
                       showCancelButton: true,
                       confirmButtonColor: '#3085d6',
@@ -282,7 +282,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/ubahstatustargetpertanyaan',
+                              url: '<?php echo base_url(); ?>administrator/ubahstatusselfcontroljawaban',
                               method: 'POST',
                               data: {
                                   id: id,
@@ -340,10 +340,10 @@
 
               $(document).on('click', '.jawaban', function() {
 
-                  $('#form_pernyataan_jawaban')[0].reset();
+                  $('#form_selfcontrol_jawaban')[0].reset();
                   var id_pertanyaan = $(this).attr('id');
                   //   console.log('j', id_pertanyaan);
-                  dataTableJawaban = $('#tabel_pernyataan_jawaban').DataTable({
+                  dataTableJawaban = $('#tabel_selfcontrol_jawaban').DataTable({
                       "serverSide": true,
                       "processing": true,
                       "showing": false,
@@ -354,7 +354,7 @@
                       "info": false,
                       "order": [],
                       "ajax": {
-                          "url": "<?php echo base_url(); ?>administrator/tabelPernyataanJawaban",
+                          "url": "<?php echo base_url(); ?>administrator/tabelSelfcontrolJawaban",
                           "type": "POST",
                           "data": function(data) {
                               data.id_pertanyaan = id_pertanyaan;
@@ -372,11 +372,11 @@
 
               $(document).on('click', '.jawaban_betul', function() {
 
-                  $('#form_pernyataan_jawaban')[0].reset();
+                  $('#form_selfcontrol_jawaban')[0].reset();
                   var id_pertanyaan = $(this).attr('id');
 
                   $.ajax({
-                      url: "<?php echo base_url(); ?>administrator/getAllJawabanPernyataan",
+                      url: "<?php echo base_url(); ?>administrator/getAllJawabanSelfcontrol",
                       method: "POST",
                       dataType: 'JSON',
                       data: {
@@ -396,7 +396,7 @@
                   });
 
                   $.ajax({
-                      url: "<?php echo base_url(); ?>administrator/getPertanyaanPernyataan",
+                      url: "<?php echo base_url(); ?>administrator/getPertanyaanSelfcontrol",
                       method: "POST",
                       dataType: 'JSON',
                       data: {
@@ -427,7 +427,7 @@
                   $('.modal-title').text('Jawaban Betul');
               });
 
-              $(document).on('submit', '#form_pernyataan_jawaban', function(event) {
+              $(document).on('submit', '#form_selfcontrol_jawaban', function(event) {
                   event.preventDefault();
                   var jawaban = $('#jawaban').val();
                   var id_pertanyaan = $('#id_pertanyaan').val();
@@ -442,7 +442,7 @@
                       });
                   } else {
                       $.ajax({
-                          url: '<?php echo base_url(); ?>administrator/simpanpernyataanJawaban',
+                          url: '<?php echo base_url(); ?>administrator/simpanselfcontrolJawaban',
                           method: 'POST',
                           data: {
                               jawaban: jawaban,
@@ -478,7 +478,7 @@
                       });
                   } else {
                       $.ajax({
-                          url: '<?php echo base_url(); ?>administrator/simpanJawabanBetulPernyataan',
+                          url: '<?php echo base_url(); ?>administrator/simpanJawabanBetulSelfcontrol',
                           method: 'POST',
                           data: {
                               jawaban: jawaban,
@@ -503,7 +503,7 @@
                   let status = $(this).attr('status')
                   Swal.fire({
                       title: 'Apakah Kamu Yakin?',
-                      text: "Upload file nilai ini?",
+                      text: "",
                       icon: 'warning',
                       showCancelButton: true,
                       confirmButtonColor: '#3085d6',
@@ -513,7 +513,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/ubahstatustargetpertanyaan',
+                              url: '<?php echo base_url(); ?>administrator/ubahstatusselfcontrolpertanyaan',
                               method: 'POST',
                               data: {
                                   id: id,
@@ -527,7 +527,7 @@
                                       showConfirmButton: false,
                                       timer: 1500
                                   })
-                                  dataTable.ajax.reload();
+                                  dataTableJawaban.ajax.reload();
                               }
                           });
                       }

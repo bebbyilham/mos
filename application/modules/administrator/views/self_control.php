@@ -7,7 +7,7 @@
                       <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
                   </div>
                   <div class="col-lg-6 col-5 text-right">
-                      <a href="<?php echo base_url(); ?>administrator/tambahpernyataantarget" class="tambah_edukasi btn btn-sm btn-neutral">Tambah</a>
+                      <a href="<?php echo base_url(); ?>administrator/tambahselfControl" class="tambah_edukasi btn btn-sm btn-neutral">Tambah</a>
                   </div>
               </div>
               <!-- Card stats -->
@@ -34,7 +34,7 @@
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_pernyataan_target" class="table table-hover table-sm display">
+                          <table id="tabel_self_control" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
@@ -51,51 +51,7 @@
               </div>
           </div>
       </div>
-      <!-- Modal Create User -->
-      <div class="modal fade" id="modal_tambah_edukasi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h4 class="modal-title text-primary"></h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <form method="post" id="tambah_user">
-                      <div class="modal-body">
-                          <input type="hidden" name="pegawai_id" id="pegawai_id">
-                          <input type="hidden" id="id_user" name="id_user">
-                          <input type="hidden" name="action_modal" id="action_modal" value="edit">
-                          <input type="hidden" name="nama_akun" id="nama_akun">
-                          <div class="form-group">
-                              <label for="judul">Judul</label>
-                              <input type="text" class="form-control rounded-0" id="judul" name="judul" placeholder="Judul">
-                              <small><span class="text-danger" id="error_judul"></span></small>
-                          </div>
-                          <div class="form-group">
-                              <label for="password">Password</label>
-                              <input type="password" class="form-control rounded-0" id="password" name="password" placeholder="Password">
-                              <small><span class="text-danger" id="error_password"></span></small>
-                          </div>
-                          <div class="form-group">
-                              <label for="password2">Ulangi Password</label>
-                              <input type="password" class="form-control rounded-0" id="password2" name="password2" placeholder="Ulangi Password">
-                              <small><span class="text-danger" id="error_password2"></span></small>
-                          </div>
-                          <div class="form-group">
-                              <label for="role_id">Role</label>
-                              <select class="custom-select rounded-0" id="role_id" name="role_id"></select>
-                              <small><span class="text-danger" id="error_role_id"></span></small>
-                          </div>
-                      </div>
-                      <div class="modal-footer justify-content-between">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                          <button type="submit" class="btn btn-primary">Submit</button>
-                      </div>
-                  </form>
-              </div>
-          </div>
-      </div>
+
       <div class="modal fade" id="modal_info_pernyataan_target" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
               <div class="modal-content">
@@ -117,13 +73,13 @@
           $(document).ready(function() {
               $('#loading').hide();
               // DataTable
-              var dataTable = $('#tabel_pernyataan_target').DataTable({
+              var dataTable = $('#tabel_self_control').DataTable({
                   "serverSide": true,
                   "responsive": true,
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>administrator/tabelpernyataantarget",
+                      "url": "<?php echo base_url(); ?>administrator/tabelselfcontrol",
                       "type": "POST",
                   },
                   columnDefs: [{
@@ -136,10 +92,10 @@
                   },
               });
 
-              //target
-              $(document).on('click', '.target', function() {
+              //metode
+              $(document).on('click', '.metode', function() {
                   var id = $(this).attr('id');
-                  window.open('<?= base_url(); ?>administrator/kontentarget/' + id);
+                  window.open('<?= base_url(); ?>administrator/kontenmetode/' + id);
               });
 
               // info konten
