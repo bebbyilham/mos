@@ -1,7 +1,7 @@
 <!-- Query Menu -->
 <?php
 $role_id = $this->session->userdata('role_id');
-$queryMenu = "SELECT `user_menu`.`id`, `menu`
+$queryMenu = "SELECT `user_menu`.`id`, `menu`,`deskripsi`
                 FROM `user_menu` JOIN `user_access_menu` 
                 ON `user_menu`.`id` = `user_access_menu`.`menu_id`
                 WHERE `user_access_menu`.`role_id` = $role_id
@@ -48,7 +48,7 @@ $menu = $this->db->query($queryMenu)->result_array();
                             <a class="nav-link " href="#navbar-<?php echo $m['id']; ?>" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-<?php echo $m['id']; ?>">
                                 <!-- <i class="<?php echo $m['icon']; ?>"></i> -->
                                 <i class="fas fa-dot-circle text-orange"></i>
-                                <span class="nav-link-text"><b><?= $m['menu']; ?></b></span>
+                                <span class="nav-link-text"><b><?= $m['deskripsi']; ?></b></span>
                             </a>
 
                             <?php
