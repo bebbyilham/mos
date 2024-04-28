@@ -10,6 +10,7 @@ class Pasien extends MX_Controller
         $this->load->model('Blog_model');
         $this->load->model('Creator_model');
         $this->load->model('Pasien_model');
+        $this->load->model('Pernyataantarget_model');
     }
 
     public function index()
@@ -60,10 +61,14 @@ class Pasien extends MX_Controller
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item buat_akun" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Buat Akun</a>
-                                <a class="dropdown-item rawatan_baru" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Rawatan Baru</a>
-                               
-                                <a class="dropdown-item hasil_observasi" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Hasil Observasi</a>
                                 <a class="dropdown-item detail_pasien" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '">Detail Pasien</a>
+                               
+                                <a class="dropdown-item riwayat_edukasi" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Edukasi</a>
+                                <a class="dropdown-item pernyataan_target" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Pernyataan Target</a>
+                                <a class="dropdown-item selfcontrol" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Self Control</a>
+                                <a class="dropdown-item terapi" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Akses Terapi</a>
+                                <a class="dropdown-item chat" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Chat</a>
+                                <a class="dropdown-item reminder" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Reminder</a>
                             </div>
             </div>
             </div>
@@ -1393,6 +1398,194 @@ class Pasien extends MX_Controller
             "draw"                => intval($_POST['draw']),
             "recordsTotal"        => $this->Pasien_model->get_all_data_hasil_observasi(),
             "recordsFiltered"     => $this->Pasien_model->get_filtered_data_hasil_observasi(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function tabelkontenedukasi()
+    {
+        $fetch_data = $this->Pasien_model->make_datatables_akses_materi();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+            if ($row->status == 'selesai') {
+                $status = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->status . '</span>';
+            } else {
+                $status = '<span href="#" class="status badge badge-success" title="waktu akses" >' . $row->status . '</span>';
+            }
+
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+            // if ($row->status == 'selesai') {
+            //     $akses = '';
+            // } else {
+            //     $akses = '<a href="#" class="fa fa-pen-square fa-lg ml-2 mr-2 text-primary akses_materi" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="akses"></a>';
+            // }
+
+            // $sub_array[] = $akses;
+            $sub_array[] = "<b>" . $row->judul . "</b>";
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            $sub_array[] = $status;
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Pasien_model->get_all_data_akses_materi(),
+            "recordsFiltered"     => $this->Pasien_model->get_filtered_data_akses_materi(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function tabelPernyataanTarget()
+    {
+        $fetch_data = $this->Pasien_model->make_datatables_akses_target();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+
+
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+
+            $sub_array[] = "<b>" . $row->target . "</b>";
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-primary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            }
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Pasien_model->get_all_data_akses_target(),
+            "recordsFiltered"     => $this->Pasien_model->get_filtered_data_akses_target(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function tabelSelfcontrol()
+    {
+        $fetch_data = $this->Pasien_model->make_datatables_akses_selfcontrol();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+
+
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+
+            $sub_array[] = "<b>" . $row->metode . "</b>";
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-primary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            }
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Pasien_model->get_all_data_akses_selfcontrol(),
+            "recordsFiltered"     => $this->Pasien_model->get_filtered_data_akses_selfcontrol(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function tabelTerapi()
+    {
+        $fetch_data = $this->Pasien_model->make_datatables_akses_terapi();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+
+
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+
+            $sub_array[] = "<b>" . $row->keterangan . "</b>";
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-primary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            }
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Pasien_model->get_all_data_akses_terapi(),
+            "recordsFiltered"     => $this->Pasien_model->get_filtered_data_akses_terapi(),
             "data"                => $data
         );
         echo json_encode($output);

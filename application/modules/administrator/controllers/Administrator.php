@@ -2838,4 +2838,91 @@ class Administrator extends MX_Controller
         $this->Admin_model->ubah_status_self_control_jawaban($data, $_POST['id']);
         echo json_encode($data);
     }
+
+    public function terapi()
+    {
+        $data['title'] = 'Terapi';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'administrator/terapi';
+        // echo modules::run('template/loadview', $data);
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function tabellistterapi()
+    {
+        $fetch_data = $this->Admin_model->make_datatables_list_terapi();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+            $sub_array[] = "<b>" . $row->link . "</b><br>" . strtoupper("$row->jenis");
+            $sub_array[] = substr($row->keterangan, 0, 100);
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="1" class="dropdown-item ubahstatus">Draft</a>
+                            <a id="' . $row->id . '" status="2" class="dropdown-item ubahstatus">Aktif</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-secondary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="draft" class="dropdown-item ubahstatus">Draft</a>
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="non aktif" class="dropdown-item ubahstatus">Non Aktif</a>
+                        </div>
+                </div>';
+            }
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="Diunggah" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span>';
+            // $sub_array[] = '<a href="#" class="fas fa-question-circle fa-lg ml-2 mr-2 text-primary pertanyaan" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="Pertanyaan"></a>';
+
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Admin_model->get_all_data_list_terapi(),
+            "recordsFiltered"     => $this->Admin_model->get_filtered_data_list_terapi(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function ubahstatuslistterapi()
+    {
+        $data = array(
+            'status'            => $_POST['status'],
+        );
+
+        $this->Admin_model->ubah_status_list_terapi($data, $_POST['id']);
+        echo json_encode($data);
+    }
+
+    public function simpanlistterapi()
+    {
+        $data = array(
+            'link'            => $_POST['link'],
+            'jenis'        => $_POST['jenis'],
+            'urutan'     => $_POST['urutan'],
+            'status'          => $_POST['status'],
+            'keterangan'     => $_POST['keterangan'],
+        );
+
+        $this->Admin_model->simpan_list_terapi($data);
+        echo json_encode($data);
+    }
 }

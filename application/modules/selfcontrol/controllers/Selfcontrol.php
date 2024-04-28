@@ -28,7 +28,7 @@ class Selfcontrol extends MX_Controller
 
     public function pencegahanKejang()
     {
-        $data['title'] = 'Pencegahan Kejang';
+        $data['title'] = 'Perilaku Pencegahan Kejang';
         $data['user'] = $this->db->get_where('user', ['username' =>
         $this->session->userdata('username')])->row_array();
 

@@ -2062,7 +2062,7 @@ class Admin_model extends CI_Model
         $this->db->from('list_selfcontrol');
         return $this->db->count_all_results();
     }
-    //end edukasi
+    //end selfcontrol
 
     public function ubah_status_list_selfcontrol($data, $id)
     {
@@ -2215,6 +2215,71 @@ class Admin_model extends CI_Model
         $this->db->where('id', $id);
         $this->db->update(
             'pertanyaan_selfcontrol',
+            $data
+        );
+    }
+
+    var $order_columnT = array(
+        null, 'judul', null, 'status', 'created_at', null
+    );
+    public function make_query_list_terapi()
+    {
+        $this->db->select('*');
+        // $this->db->where('id_terapi', $_POST['id_metode']);
+        $this->db->from('list_terapi');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('keterangan', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnT[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_list_terapi()
+    {
+        $this->make_query_list_terapi();
+
+        if (
+            $_POST["length"] != -1
+        ) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_list_terapi()
+    {
+        $this->make_query_list_terapi();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_list_terapi()
+    {
+        $this->db->select("*");
+        $this->db->from('list_terapi');
+        return $this->db->count_all_results();
+    }
+    //end terapi
+
+    public function simpan_list_terapi($data)
+    {
+        $this->db->insert('list_terapi', $data);
+    }
+
+    public function ubah_status_list_terapi(
+        $data,
+        $id
+    ) {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'list_terapi',
             $data
         );
     }

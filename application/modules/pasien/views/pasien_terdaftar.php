@@ -160,6 +160,49 @@
               </form>
           </div>
       </div>
+      <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <form method="post" id="form_print">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Tanggal Resume Medis</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="table-responsive">
+                              <table id="tabel_chat" class="table table-hover table-sm display">
+                                  <tbody>
+                                      <tr>
+                                          <td>Nama</td>
+                                          <td>:</td>
+                                          <td class="detail_nama">Nama</td>
+                                      </tr>
+                                      <tr>
+                                          <td>No. Telp</td>
+                                          <td>:</td>
+                                          <td class="badge badge-primary detail_notelp1"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>Nama Keluarga</td>
+                                          <td>:</td>
+                                          <td class="detail_nama_pj"></td>
+                                      </tr>
+                                      <tr>
+                                          <td>No. Telp Keluarga</td>
+                                          <td>:</td>
+                                          <td class="badge badge-primary detail_notelp3"></td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+
+                  </div>
+              </form>
+          </div>
+      </div>
       <!-- Modal Create User -->
       <div class="modal fade" id="modal_create_user" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -221,6 +264,126 @@
                                           <th style="width: 20%;">Materi</th>
                                           <th style="width: 25%;">Waktu Akses</th>
                                           <!-- <th style="width: 40%;">Jenis Kelamin</th> -->
+                                          <th style="width: 10%;">Status</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div class="modal fade" id="edukasiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <form method="post" id="form_print">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Edukasi</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="table-responsive">
+                              <table id="tabel_edukasi" class="table table-hover table-sm display">
+                                  <thead>
+                                      <tr>
+                                          <th style="width: 5%;">No.</th>
+                                          <!-- <th style="width: 5%;"></th> -->
+                                          <th style="width: 25%;">Materi</th>
+                                          <th style="width: 25%;">Waktu Akses</th>
+                                          <th style="width: 10%;">Status</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div class="modal fade" id="pernyataanTargetModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <form method="post" id="form_print">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Edukasi</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="table-responsive">
+                              <table id="tabel_pernyatan_target" class="table table-hover table-sm display">
+                                  <thead>
+                                      <tr>
+                                          <th style="width: 5%;">No.</th>
+                                          <!-- <th style="width: 5%;"></th> -->
+                                          <th style="width: 25%;">Target</th>
+                                          <th style="width: 25%;">Waktu Akses</th>
+                                          <th style="width: 10%;">Status</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div class="modal fade" id="selfcontrolModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <form method="post" id="form_print">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Edukasi</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="table-responsive">
+                              <table id="tabel_selfcontrol" class="table table-hover table-sm display">
+                                  <thead>
+                                      <tr>
+                                          <th style="width: 5%;">No.</th>
+                                          <!-- <th style="width: 5%;"></th> -->
+                                          <th style="width: 25%;">Selfcontrol</th>
+                                          <th style="width: 25%;">Waktu Akses</th>
+                                          <th style="width: 10%;">Status</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div class="modal fade" id="terapiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <form method="post" id="form_print">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Edukasi</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="table-responsive">
+                              <table id="tabel_terapi" class="table table-hover table-sm display">
+                                  <thead>
+                                      <tr>
+                                          <th style="width: 5%;">No.</th>
+                                          <!-- <th style="width: 5%;"></th> -->
+                                          <th style="width: 25%;">Selfcontrol</th>
+                                          <th style="width: 25%;">Waktu Akses</th>
                                           <th style="width: 10%;">Status</th>
                                       </tr>
                                   </thead>
@@ -444,6 +607,145 @@
                   $('#hasilobservasiModal').modal('show');
               });
 
+              // edukasi
+              $(document).on('click', '.riwayat_edukasi', function() {
+                  var id = $(this).attr('id');
+                  //   var idpasien = $(this).attr('idpasien');
+                  var namapasien = $(this).attr('namapasien');
+
+                  dataTableEdukasi = $('#tabel_edukasi').DataTable({
+                      "serverSide": true,
+                      "processing": true,
+                      "showing": false,
+                      "paging": false,
+                      "ordering": false,
+                      "searching": false,
+                      "destroy": true,
+                      "info": false,
+                      "order": [],
+                      "ajax": {
+                          "url": "<?php echo base_url(); ?>pasien/tabelkontenedukasi",
+                          "type": "POST",
+                          "data": function(data) {
+                              data.id_pasien = id;
+                          },
+                      },
+                      columnDefs: [{
+                          orderable: !1,
+                      }],
+                      autoWidth: !1
+                  });
+                  $('.modal-title').text(namapasien);
+                  //   $('#idpasien').val(id);
+                  //   dataTable2.ajax.reload();
+                  $('#edukasiModal').modal('show');
+              });
+
+              // target
+              $(document).on('click', '.pernyataan_target', function() {
+                  var id = $(this).attr('id');
+                  //   var idpasien = $(this).attr('idpasien');
+                  var namapasien = $(this).attr('namapasien');
+
+                  dataTablePernyataanTarget = $('#tabel_pernyatan_target').DataTable({
+                      "serverSide": true,
+                      "processing": true,
+                      "showing": false,
+                      "paging": false,
+                      "ordering": false,
+                      "searching": false,
+                      "destroy": true,
+                      "info": false,
+                      "order": [],
+                      "ajax": {
+                          "url": "<?php echo base_url(); ?>pasien/tabelPernyataanTarget",
+                          "type": "POST",
+                          "data": function(data) {
+                              data.id_pasien = id;
+                          },
+                      },
+                      columnDefs: [{
+                          orderable: !1,
+                      }],
+                      autoWidth: !1
+                  });
+                  $('.modal-title').text(namapasien);
+                  //   $('#idpasien').val(id);
+                  //   dataTable2.ajax.reload();
+                  $('#pernyataanTargetModal').modal('show');
+              });
+
+              // selfcontrol
+              $(document).on('click', '.selfcontrol', function() {
+                  var id = $(this).attr('id');
+                  //   var idpasien = $(this).attr('idpasien');
+                  var namapasien = $(this).attr('namapasien');
+
+                  dataTableSelfcontrol = $('#tabel_selfcontrol').DataTable({
+                      "serverSide": true,
+                      "processing": true,
+                      "showing": false,
+                      "paging": false,
+                      "ordering": false,
+                      "searching": false,
+                      "destroy": true,
+                      "info": false,
+                      "order": [],
+                      "ajax": {
+                          "url": "<?php echo base_url(); ?>pasien/tabelSelfcontrol",
+                          "type": "POST",
+                          "data": function(data) {
+                              data.id_pasien = id;
+                          },
+                      },
+                      columnDefs: [{
+                          orderable: !1,
+                      }],
+                      autoWidth: !1
+                  });
+                  $('.modal-title').text(namapasien);
+                  //   $('#idpasien').val(id);
+                  //   dataTable2.ajax.reload();
+                  $('#selfcontrolModal').modal('show');
+              });
+
+
+              // terapi
+              $(document).on('click', '.terapi', function() {
+                  var id = $(this).attr('id');
+                  //   var idpasien = $(this).attr('idpasien');
+                  var namapasien = $(this).attr('namapasien');
+
+                  dataTableTerapi = $('#tabel_terapi').DataTable({
+                      "serverSide": true,
+                      "processing": true,
+                      "showing": false,
+                      "paging": false,
+                      "ordering": false,
+                      "searching": false,
+                      "destroy": true,
+                      "info": false,
+                      "order": [],
+                      "ajax": {
+                          "url": "<?php echo base_url(); ?>pasien/tabelTerapi",
+                          "type": "POST",
+                          "data": function(data) {
+                              data.id_pasien = id;
+                          },
+                      },
+                      columnDefs: [{
+                          orderable: !1,
+                      }],
+                      autoWidth: !1
+                  });
+                  $('.modal-title').text(namapasien);
+                  //   $('#idpasien').val(id);
+                  //   dataTable2.ajax.reload();
+                  $('#terapiModal').modal('show');
+              });
+
+
+
               // detail pasien
               $(document).on('click', '.detail_pasien', function() {
                   var id = $(this).attr('id');
@@ -459,6 +761,36 @@
                       dataType: 'json',
                       success: function(data) {
                           $('#detailpasienModal').modal('show');
+                          console.log(data);
+                          $('.detail_nama').text(data.nama);
+                          $('.detail_nik').text(data.nik);
+                          $('.detail_no_mr').text(data.no_mr);
+                          $('.detail_jenis_kelamin').text(data.jenis_kelamin);
+                          $('.detail_tanggal_lahir').text(data.tanggal_lahir);
+                          $('.detail_alamat').text(data.alamat);
+                          $('.detail_notelp1').text(data.notelp1);
+                          $('.detail_nama_pj').text(data.nama_pj);
+                          $('.detail_notelp3').text(data.notelp3);
+                      }
+                  });
+
+              });
+
+              // detail pasien
+              $(document).on('click', '.chat', function() {
+                  var id = $(this).attr('id');
+                  var namapasien = $(this).attr('namapasien');
+                  $('.modal-title').text(namapasien);
+                  $('#idpasien').val(id);
+                  $.ajax({
+                      url: '<?php echo base_url(); ?>pasien/fetchSinglePasien',
+                      method: 'POST',
+                      data: {
+                          id: id
+                      },
+                      dataType: 'json',
+                      success: function(data) {
+                          $('#chatModal').modal('show');
                           console.log(data);
                           $('.detail_nama').text(data.nama);
                           $('.detail_nik').text(data.nik);

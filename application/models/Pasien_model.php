@@ -951,5 +951,215 @@
             return $this->db->count_all_results();
         }
         //end edukasi
+
+        //tabel konten edukasi
+        var $order_columnKE2 = array(null, 'judul', null, 'status', 'created_at', null);
+        public function make_query_akses_materi()
+        {
+            $this->db->select('
+            akses_materi.id,
+            akses_materi.status,
+            akses_materi.created_at,
+            akses_materi.updated_at,
+            konten_edukasi.judul
+            ');
+            $this->db->where('id_pasien', $_POST['id_pasien']);
+            $this->db->from('akses_materi');
+            $this->db->join('konten_edukasi', 'konten_edukasi.id = akses_materi.id_konten_edukasi', 'LEFT');
+            if (($_POST["search"]["value"])) {
+                $this->db->like('id_konten_edukasi', $_POST["search"]["value"]);
+            }
+
+            if (isset($_POST["order"])) {
+                $this->db->order_by($this->order_columnKE2[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            } else {
+                $this->db->order_by('akses_materi.id', 'ASC');
+            }
+        }
+
+
+        public function make_datatables_akses_materi()
+        {
+            $this->make_query_akses_materi();
+
+            if ($_POST["length"] != -1) {
+                $this->db->limit($_POST['length'], $_POST['start']);
+            }
+            $query = $this->db->get();
+            return $query->result();
+        }
+
+        public function get_filtered_data_akses_materi()
+        {
+            $this->make_query_akses_materi();
+            $query = $this->db->get();
+
+            return $query->num_rows();
+        }
+
+        public function get_all_data_akses_materi()
+        {
+            $this->db->select("*");
+            $this->db->from('akses_materi');
+            return $this->db->count_all_results();
+        }
+        //end 
+
+        //tabel akses target
+        var $order_columnYT = array(null, 'judul', null, 'status', 'created_at', null);
+        public function make_query_akses_target()
+        {
+            $this->db->select('
+            akses_target.id,
+            akses_target.status,
+            akses_target.created_at,
+            akses_target.updated_at,
+            pernyataan_target.target
+            ');
+            $this->db->where('id_pasien', $_POST['id_pasien']);
+            $this->db->from('akses_target');
+            $this->db->join('pernyataan_target', 'pernyataan_target.id = akses_target.id_pernyataan_target', 'LEFT');
+            if (($_POST["search"]["value"])) {
+                $this->db->like('target', $_POST["search"]["value"]);
+            }
+
+            if (isset($_POST["order"])) {
+                $this->db->order_by($this->order_columnYT[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            } else {
+                $this->db->order_by('akses_target.id', 'ASC');
+            }
+        }
+
+
+        public function make_datatables_akses_target()
+        {
+            $this->make_query_akses_target();
+
+            if ($_POST["length"] != -1) {
+                $this->db->limit($_POST['length'], $_POST['start']);
+            }
+            $query = $this->db->get();
+            return $query->result();
+        }
+
+        public function get_filtered_data_akses_target()
+        {
+            $this->make_query_akses_target();
+            $query = $this->db->get();
+
+            return $query->num_rows();
+        }
+
+        public function get_all_data_akses_target()
+        {
+            $this->db->select("*");
+            $this->db->from('akses_target');
+            return $this->db->count_all_results();
+        }
+        //end target
+
+        //tabel akses selfcontrol
+        var $order_columnKE3 = array(null, 'metode', null, 'status', 'created_at', null);
+        public function make_query_akses_selfcontrol()
+        {
+            $this->db->select('
+            akses_selfcontrol.id,
+            akses_selfcontrol.status,
+            akses_selfcontrol.created_at,
+            akses_selfcontrol.updated_at,
+            self_control.metode
+            ');
+            $this->db->where('id_pasien', $_POST['id_pasien']);
+            $this->db->from('akses_selfcontrol');
+            $this->db->join('self_control', 'self_control.id = akses_selfcontrol.id_selfcontrol', 'LEFT');
+            if (($_POST["search"]["value"])) {
+                $this->db->like('target', $_POST["search"]["value"]);
+            }
+
+            if (isset($_POST["order"])) {
+                $this->db->order_by($this->order_columnKE3[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            } else {
+                $this->db->order_by('akses_selfcontrol.id', 'ASC');
+            }
+        }
+
+
+        public function make_datatables_akses_selfcontrol()
+        {
+            $this->make_query_akses_selfcontrol();
+
+            if ($_POST["length"] != -1) {
+                $this->db->limit($_POST['length'], $_POST['start']);
+            }
+            $query = $this->db->get();
+            return $query->result();
+        }
+
+        public function get_filtered_data_akses_selfcontrol()
+        {
+            $this->make_query_akses_selfcontrol();
+            $query = $this->db->get();
+
+            return $query->num_rows();
+        }
+
+        public function get_all_data_akses_selfcontrol()
+        {
+            $this->db->select("*");
+            $this->db->from('akses_selfcontrol');
+            return $this->db->count_all_results();
+        }
+
+        //tabel akses terapi
+        var $order_columnKE4 = array(null, 'metode', null, 'status', 'created_at', null);
+        public function make_query_akses_terapi()
+        {
+            $this->db->select('
+            akses_terapi.id,
+            akses_terapi.status,
+            akses_terapi.created_at,
+            akses_terapi.updated_at,
+            list_terapi.keterangan
+            ');
+            $this->db->where('id_pasien', $_POST['id_pasien']);
+            $this->db->from('akses_terapi');
+            $this->db->join('list_terapi', 'list_terapi.id = akses_terapi.id_terapi', 'LEFT');
+            if (($_POST["search"]["value"])) {
+                $this->db->like('target', $_POST["search"]["value"]);
+            }
+
+            if (isset($_POST["order"])) {
+                $this->db->order_by($this->order_columnKE4[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            } else {
+                $this->db->order_by('akses_terapi.id', 'ASC');
+            }
+        }
+
+
+        public function make_datatables_akses_terapi()
+        {
+            $this->make_query_akses_terapi();
+
+            if ($_POST["length"] != -1) {
+                $this->db->limit($_POST['length'], $_POST['start']);
+            }
+            $query = $this->db->get();
+            return $query->result();
+        }
+
+        public function get_filtered_data_akses_terapi()
+        {
+            $this->make_query_akses_terapi();
+            $query = $this->db->get();
+
+            return $query->num_rows();
+        }
+
+        public function get_all_data_akses_terapi()
+        {
+            $this->db->select("*");
+            $this->db->from('akses_terapi');
+            return $this->db->count_all_results();
+        }
     }
     ?>
