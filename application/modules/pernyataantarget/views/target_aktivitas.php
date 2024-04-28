@@ -90,7 +90,7 @@
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>pernyataanTarget/tabelPernyataanTarget",
+                      "url": "<?php echo base_url(); ?>pernyataantarget/tabelPernyataanTarget",
                       "type": "POST",
                       "data": function(data) {
                           data.id_user = <?= $user['id_user']; ?>
