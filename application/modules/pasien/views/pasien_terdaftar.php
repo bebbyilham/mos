@@ -310,7 +310,7 @@
               <form method="post" id="form_print">
                   <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Edukasi</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Target</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                           </button>
@@ -340,7 +340,7 @@
               <form method="post" id="form_print">
                   <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Edukasi</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">Selfcontrol</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                           </button>
@@ -370,7 +370,7 @@
               <form method="post" id="form_print">
                   <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Edukasi</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Terapi</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                           </button>
@@ -384,6 +384,36 @@
                                           <!-- <th style="width: 5%;"></th> -->
                                           <th style="width: 25%;">Selfcontrol</th>
                                           <th style="width: 25%;">Waktu Akses</th>
+                                          <th style="width: 10%;">Status</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div class="modal fade" id="reminderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <form method="post" id="form_print">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Riwayat Reminder</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="table-responsive">
+                              <table id="tabel_reminder" class="table table-hover table-sm display">
+                                  <thead>
+                                      <tr>
+                                          <th style="width: 5%;">No.</th>
+                                          <th style="width: 25%;">Waktu</th>
+                                          <th style="width: 25%;">Keterangan</th>
+                                          <th style="width: 10%;">Dibuat</th>
                                           <th style="width: 10%;">Status</th>
                                       </tr>
                                   </thead>
@@ -743,6 +773,41 @@
                   //   dataTable2.ajax.reload();
                   $('#terapiModal').modal('show');
               });
+
+              // reminder
+              $(document).on('click', '.reminder', function() {
+                  var id = $(this).attr('id');
+                  //   var idpasien = $(this).attr('idpasien');
+                  var namapasien = $(this).attr('namapasien');
+
+                  dataTableReminder = $('#tabel_reminder').DataTable({
+                      "serverSide": true,
+                      "processing": true,
+                      "showing": false,
+                      "paging": false,
+                      "ordering": false,
+                      "searching": false,
+                      "destroy": true,
+                      "info": false,
+                      "order": [],
+                      "ajax": {
+                          "url": "<?php echo base_url(); ?>pasien/tabelreminder",
+                          "type": "POST",
+                          "data": function(data) {
+                              data.id_pasien = id;
+                          },
+                      },
+                      columnDefs: [{
+                          orderable: !1,
+                      }],
+                      autoWidth: !1
+                  });
+                  $('.modal-title').text(namapasien);
+                  //   $('#idpasien').val(id);
+                  //   dataTable2.ajax.reload();
+                  $('#reminderModal').modal('show');
+              });
+
 
 
 

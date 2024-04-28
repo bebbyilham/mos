@@ -34,15 +34,14 @@
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_terapi" class="table table-hover table-sm display">
+                          <table id="tabel_reminder" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
-                                      <th style="width: 25%;">Konten</th>
+                                      <th style="width: 25%;">Waktu</th>
                                       <th style="width: 25%;">Keterangan</th>
-                                      <th style="width: 10%;">Status</th>
                                       <th style="width: 10%;">Dibuat</th>
-                                      <!-- <th style="width: 10%;">#</th> -->
+                                      <th style="width: 10%;">Status</th>
                                   </tr>
                               </thead>
                           </table>
@@ -52,7 +51,7 @@
           </div>
       </div>
       <!-- Modal Create User -->
-      <div class="modal fade" id="modal_konten_terapi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal fade" id="modal_reminder" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
@@ -61,43 +60,29 @@
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <form method="post" id="form_konten_terapi">
+                  <form method="post" id="form_reminder">
                       <div class="modal-body">
                           <div class="form-group">
-                              <label class="form-control-label" for="input-last-name">Jenis</label>
+                              <label class="form-control-label" for="input-last-name">Waktu</label>
                               <div class="input-group">
-                                  <select class="custom-select rounded-0" id="jenis" name="jenis">
-                                      <option value="video">Video</option>
-                                      <option value="Gambar">Gambar</option>
-                                  </select>
+                                  <input type="text" class="form-control" id="waktu" name="waktu" placeholder="Waktu" autocomplete="off">
+                                  <div class="input-group-append">
+                                      <span class="input-group-text">
+                                          <span class="fa fa-calendar-alt"></span>
+                                      </span>
+                                  </div>
                               </div>
-                          </div>
-                          <div class="form-group">
-                              <label for="link">Link</label>
-                              <input type="text" id="link" name="link" class="form-control" placeholder="Isi link video/gambar">
                           </div>
                           <div class="form-group">
                               <label for="keterangan">Keterangan</label>
-                              <input type="text" id="keterangan" name="keterangan" class="form-control" placeholder="Isi keterangan video/gambar">
-                          </div>
-                          <div class="form-group">
-                              <label for="urutan">Urutan</label>
-                              <input type="number" id="urutan" name="urutan" class="form-control" placeholder="Isi urutan video/gambar">
-                          </div>
-                          <div class="form-group">
-                              <label class="form-control-label" for="input-last-name">Status</label>
-                              <div class="input-group">
-                                  <select class="custom-select rounded-0" id="status" name="status">
-                                      <option value="aktif">Aktif</option>
-                                      <option value="draft">Draft</option>
-                                      <option value="non aktif">Non aktif</option>
-                                  </select>
-                              </div>
+                              <input type="hidden" name="id_user" id="id_user" value="<?php echo $user['id_user'] ?>">
+                              <input type="hidden" name="id_pasien" id="id_pasien" value="<?php echo $user['pasien_id'] ?>">
+                              <input type="text" id="keterangan" name="keterangan" class="form-control" placeholder="Isi keterangan">
                           </div>
                       </div>
                       <div class="modal-footer">
                           <div class="text-right">
-                              <button type="submit" class="btn btn-primary ">Simpan</button>
+                              <button type="submit" class="btn btn-primary">Simpan</button>
                           </div>
                       </div>
                   </form>
@@ -107,15 +92,27 @@
       <script>
           $(document).ready(function() {
               $('#loading').hide();
+
+              $('#waktu').datetimepicker({
+                  timepicker: true,
+                  datepicker: true,
+                  scrollInput: false,
+                  theme: 'success',
+                  format: 'Y-m-d h:i:s',
+                  // maxDate: '+2y',
+              });
               // DataTable
-              var dataTable = $('#tabel_terapi').DataTable({
+              var dataTable = $('#tabel_reminder').DataTable({
                   "serverSide": true,
                   "responsive": true,
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>administrator/tabellistterapi",
+                      "url": "<?php echo base_url(); ?>pesanreminder/tabelreminder",
                       "type": "POST",
+                      "data": function(data) {
+                          data.id_user = <?= $user['id_user']; ?>
+                      },
                   },
                   columnDefs: [{
                       orderable: false,
@@ -130,48 +127,57 @@
 
               $('#tambah_konten_metode').on('click', function() {
 
-                  $('#modal_konten_terapi').modal('show');
+                  $('#modal_reminder').modal('show');
                   $('.modal-title').text('Tambah');
               });
 
               //submit konten
-              $(document).on('submit', '#form_konten_terapi', function(event) {
+              $(document).on('submit', '#form_reminder', function(event) {
                   event.preventDefault();
-                  //   var id = $(this).attr('id');
-                  var jenis = $('#jenis').val();
-                  var link = $('#link').val();
+                  var waktu = $('#waktu').val()
+                  var keterangan = $('#keterangan').val()
 
-                  Swal.fire({
-                      title: 'Apakah Kamu Yakin?',
-                      text: "Simpan konten",
-                      icon: 'warning',
-                      showCancelButton: true,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      cancelButtonText: 'Batal',
-                      confirmButtonText: 'Ya, Saya Yakin'
-                  }).then((result) => {
-                      if (result.isConfirmed) {
-                          $.ajax({
-                              url: '<?php echo base_url(); ?>pesanreminder/tabelreminder',
-                              method: 'POST',
-                              data: new FormData(this),
-                              contentType: false,
-                              processData: false,
-                              success: function(data) {
-                                  Swal.fire({
-                                      icon: 'success',
-                                      title: 'Foto berhasil ditambahkan',
-                                      showConfirmButton: false,
-                                      timer: 2000
-                                  })
-                                  dataTable.ajax.reload();
-                                  $('#modal_konten_terapi').modal('hide');
-                                  $('#form_konten_terapi')[0].reset();
-                              }
-                          });
-                      }
-                  })
+                  if (waktu == '' || keterangan == '') {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Data belum lengkap!',
+                          text: 'Mohon lengkapi data terlebih dahulu',
+                      });
+                  } else {
+                      Swal.fire({
+                          title: 'Apakah Kamu Yakin?',
+                          text: "",
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          cancelButtonText: 'Batal',
+                          confirmButtonText: 'Ya, Saya Yakin'
+                      }).then((result) => {
+                          if (result.isConfirmed) {
+                              $.ajax({
+                                  url: '<?php echo base_url(); ?>pesanreminder/simpanReminder',
+                                  method: 'POST',
+                                  data: new FormData(this),
+                                  contentType: false,
+                                  processData: false,
+                                  success: function(data) {
+                                      Swal.fire({
+                                          icon: 'success',
+                                          title: 'Data berhasil ditambahkan',
+                                          showConfirmButton: false,
+                                          timer: 2000
+                                      })
+                                      dataTable.ajax.reload();
+                                      $('#modal_reminder').modal('hide');
+                                      $('#form_reminder')[0].reset();
+                                  }
+                              });
+                          }
+                      })
+                  }
+
+
               });
 
               // konten edukasi
@@ -195,7 +201,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/ubahstatuslistterapi',
+                              url: '<?php echo base_url(); ?>pesanreminder/ubahstatusreminder',
                               method: 'POST',
                               data: {
                                   id: id,

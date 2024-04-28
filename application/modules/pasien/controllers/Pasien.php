@@ -79,7 +79,7 @@ class Pasien extends MX_Controller
             } else {
                 $jk = 'Perempuan';
             }
-            $sub_array[] = "<b>" . strtoupper("$row->nama") . "</b><br>" . $row->no_mr . "<br>" . $row->nik . "<br>" . strtoupper("$jk") . "<br>" . $y . " Tahun " . $m . " Bulan " . $d . " Hari";
+            $sub_array[] = "<b>" . strtoupper("$row->nama") . "</b><br>" . $row->no_mr . "<br>" . $row->nik . "<br>" . strtoupper("$jk") . "<br>" . $y . " Tahun " . $m . " Bulan " . $d . " Hari <br>" . $row->id_user;
             $sub_array[] = substr($row->alamat, 0, 25);
 
             $sub_array[] = $row->notelp1 . "<br>" . $row->notelp2;
@@ -1586,6 +1586,46 @@ class Pasien extends MX_Controller
             "draw"                => intval($_POST['draw']),
             "recordsTotal"        => $this->Pasien_model->get_all_data_akses_terapi(),
             "recordsFiltered"     => $this->Pasien_model->get_filtered_data_akses_terapi(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function tabelreminder()
+    {
+        $fetch_data = $this->Pasien_model->make_datatables_reminder();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+
+
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+
+
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu" >' . $row->waktu . '</span>';
+            $sub_array[] = "<b>" . $row->keterangan . "</b>";
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+              <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-primary">' . $row->status . '</span>
+                        </a>';
+            } else {
+                $sub_array[] = '
+                  <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>';
+            }
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Pasien_model->get_all_data_reminder(),
+            "recordsFiltered"     => $this->Pasien_model->get_filtered_data_reminder(),
             "data"                => $data
         );
         echo json_encode($output);
