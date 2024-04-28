@@ -48,3 +48,17 @@ function check_jawaban($pertanyaan_id, $id_akses_materi, $id_jawaban)
         return "checked='checked'";
     }
 }
+
+function check_jawaban_selfcontrol($pertanyaan_id, $id_akses_selfcontrol, $id_jawaban)
+{
+    $ci = get_instance();
+
+    $ci->db->where('id_pertanyaan', $pertanyaan_id);
+    $ci->db->where('id_akses_selfcontrol', $id_akses_selfcontrol);
+    $ci->db->where('id_jawaban', $id_jawaban);
+    $result = $ci->db->get('pilih_jawaban_selfcontrol');
+
+    if ($result->num_rows() > 0) {
+        return "checked='checked'";
+    }
+}

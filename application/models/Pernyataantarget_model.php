@@ -65,10 +65,10 @@
         }
         //end target
 
-        public function ubah_status_akses_target($data, $id)
+        public function ubah_status_akses_selfcontrol($data, $id)
         {
             $this->db->where('id', $id);
-            $this->db->update('akses_target', $data);
+            $this->db->update('akses_selfcontrol', $data);
         }
     }
     ?>

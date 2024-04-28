@@ -85,7 +85,8 @@ class Pernyataantarget extends MX_Controller
             if ($row->status == 'selesai') {
                 $akses = '';
             } else {
-                $akses = '<a href="#" class="fa fa-pen-square fa-lg ml-2 mr-2 text-primary akses_target" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="akses"></a>';
+                // $akses = '<a href="#" class="fa fa-pen-square fa-lg ml-2 mr-2 text-primary akses_target" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="akses"></a>';
+                $akses = '';
             }
 
             $sub_array[] = $akses;
