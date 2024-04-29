@@ -12,6 +12,20 @@
             return $query->result();
         }
 
+        public function fetch_selfcontrol()
+        {
+            $this->db->where('metode', $_POST['metode']);
+            $query = $this->db->get('self_control');
+            return $query->result();
+        }
+
+        public function fetch_examination_relaxation()
+        {
+            $this->db->where('metode', 'Self-examination Relaxation');
+            $query = $this->db->get('self_control');
+            return $query->result();
+        }
+
         //tabel akses selfcontrol
         var $order_columnKE = array(null, 'metode', null, 'status', 'created_at', null);
         public function make_query_akses_selfcontrol()
@@ -24,6 +38,7 @@
             self_control.metode
             ');
             $this->db->where('id_user', $_POST['id_user']);
+            $this->db->where('self_control.metode', $_POST['metode']);
             $this->db->from('akses_selfcontrol');
             $this->db->join('self_control', 'self_control.id = akses_selfcontrol.id_selfcontrol', 'LEFT');
             if (($_POST["search"]["value"])) {

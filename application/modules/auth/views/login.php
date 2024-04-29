@@ -57,8 +57,8 @@
         <div class="container">
             <a class="navbar-brand" href="<?= base_url(); ?>">
                 <div class="row">
-                    <img src="<?= base_url(); ?>assets/img/logo.png">
-                    <h3 class="text-primary text-bold">MOS (Management Of Seizures)</h3>
+                    <img class="mr-2" src="<?= base_url(); ?>assets/img/logo.png">
+                    <h3 class="text-warning text-bold"> MOS (Management Of Seizures)</h3>
                 </div>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,19 +84,19 @@
                 <hr class="d-lg-none" />
                 <ul class="navbar-nav align-items-lg-center ml-lg-auto">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-icon text-primary" href="#" target="_blank" data-toggle="tooltip" data-original-title="Like us on Facebook">
+                        <a class="nav-link nav-link-icon text-warning" href="#" target="_blank" data-toggle="tooltip" data-original-title="Like us on Facebook">
                             <i class="fab fa-facebook-square"></i>
                             <span class="nav-link-inner--text d-lg-none">Facebook</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-icon text-primary" href="#" target="_blank" data-toggle="tooltip" data-original-title="Follow us on Instagram">
+                        <a class="nav-link nav-link-icon text-warning" href="#" target="_blank" data-toggle="tooltip" data-original-title="Follow us on Instagram">
                             <i class="fab fa-instagram"></i>
                             <span class="nav-link-inner--text d-lg-none">Instagram</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-icon text-primary" href="#" target="_blank" data-toggle="tooltip" data-original-title="Follow us on Twitter">
+                        <a class="nav-link nav-link-icon text-warning" href="#" target="_blank" data-toggle="tooltip" data-original-title="Follow us on Twitter">
                             <i class="fab fa-twitter-square"></i>
                             <span class="nav-link-inner--text d-lg-none">Twitter</span>
                         </a>
@@ -164,7 +164,7 @@
                                     </label>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary my-4">Sign in</button>
+                                    <button type="submit" class="btn btn-warning my-4">Sign in</button>
                                 </div>
                             </form>
                         </div>

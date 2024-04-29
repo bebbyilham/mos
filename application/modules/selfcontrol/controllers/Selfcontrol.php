@@ -33,13 +33,58 @@ class Selfcontrol extends MX_Controller
         $this->session->userdata('username')])->row_array();
 
         $data['content'] = '';
-        $page = 'selfcontrol/pencegahan_kejang';
+        $page = '';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function examinationRelaxation()
+    {
+        $data['title'] = 'Self-examination Relaxation';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'selfcontrol/examination_relaxation';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function examinationStress()
+    {
+        $data['title'] = 'Self-examination Stress';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'selfcontrol/examination_stress';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function examinationSleep()
+    {
+        $data['title'] = 'Self-examination Sleep';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'selfcontrol/examination_sleep';
         echo modules::run('template/loadview', $data, $page);
     }
 
     public function getAllSelfcontrols()
     {
         $data = $this->Selfcontrol_model->fetch_all_selfcontrol();
+        echo json_encode($data);
+    }
+
+    public function getSelfcontrols()
+    {
+        $data = $this->Selfcontrol_model->fetch_selfcontrol();
+        echo json_encode($data);
+    }
+
+    public function getExaminationRelaxation()
+    {
+        $data = $this->Selfcontrol_model->fetch_examination_relaxation();
         echo json_encode($data);
     }
 
