@@ -1222,5 +1222,57 @@
             $this->db->where('id', $id);
             $this->db->update('reminder', $data);
         }
+
+        //tabel akses kuesioner
+        var $order_columnKE31 = array(null, 'metode', null, 'status', 'created_at', null);
+        public function make_query_akses_kuesioner()
+        {
+            $this->db->select('
+            akses_kuesioner.id,
+            akses_kuesioner.status,
+            akses_kuesioner.created_at,
+            akses_kuesioner.updated_at,
+            kuesioner.keterangan
+            ');
+            $this->db->where('id_pasien', $_POST['id_pasien']);
+            $this->db->from('akses_kuesioner');
+            $this->db->join('kuesioner', 'kuesioner.id = akses_kuesioner.id_kuesioner', 'LEFT');
+            if (($_POST["search"]["value"])) {
+                $this->db->like('target', $_POST["search"]["value"]);
+            }
+
+            if (isset($_POST["order"])) {
+                $this->db->order_by($this->order_columnKE31[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            } else {
+                $this->db->order_by('akses_kuesioner.id', 'ASC');
+            }
+        }
+
+
+        public function make_datatables_akses_kuesioner()
+        {
+            $this->make_query_akses_kuesioner();
+
+            if ($_POST["length"] != -1) {
+                $this->db->limit($_POST['length'], $_POST['start']);
+            }
+            $query = $this->db->get();
+            return $query->result();
+        }
+
+        public function get_filtered_data_akses_kuesioner()
+        {
+            $this->make_query_akses_kuesioner();
+            $query = $this->db->get();
+
+            return $query->num_rows();
+        }
+
+        public function get_all_data_akses_kuesioner()
+        {
+            $this->db->select("*");
+            $this->db->from('akses_kuesioner');
+            return $this->db->count_all_results();
+        }
     }
     ?>

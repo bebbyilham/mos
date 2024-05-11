@@ -21,7 +21,7 @@
                       <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
                   </div>
                   <div class="col-lg-6 col-5 text-right">
-                      <button type="button" id="selesai_akses_materi" class="btn btn-sm btn-neutral">Selesai</button>
+                      <button type="button" id="cetak" class="btn btn-sm btn-neutral">Cetak</button>
                   </div>
               </div>
               <!-- Card stats -->
@@ -40,11 +40,12 @@
               <?= $this->session->flashdata('message'); ?>
           </div>
       </div>
-      <div class="row">
+      <div id="hasil" class="row">
           <div class="col">
               <div class="card shadow-sm">
                   <div class="card-header">
-                      <h3 class="card-title">Akses Materi</h3>
+                      <h3 class="card-title"><?php echo $namapasien; ?></h3>
+                      <h3 class="card-title">Hasil Self-control</h3>
                   </div>
                   <div class="card-body">
                       <?php foreach ($edk as $e) : ?>
@@ -152,98 +153,33 @@
       <script>
           $(document).ready(function() {
 
+              $('#hasil').find('input, textarea, button, select').attr('disabled', 'disabled');
+
+              function printDiv() {
+
+                  var divToPrint = document.getElementById('hasil');
+
+                  var newWin = window.open('', 'Print-Window');
+
+                  newWin.document.open();
+
+                  newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+
+                  newWin.document.close();
+
+                  setTimeout(function() {
+                      newWin.close();
+                  }, 10);
+
+              }
+
               $('#loading').hide();
-              // DataTable
-              var dataTable = $('#tabel_selfcontrol').DataTable({
-                  "serverSide": true,
-                  "responsive": true,
-                  "pageLength": 25,
-                  "order": [],
-                  "ajax": {
-                      "url": "<?php echo base_url(); ?>edukasi/tabelkontenedukasi",
-                      "type": "POST",
-                      "data": function(data) {
-                          data.id_user = <?= $user['id_user']; ?>
-                      },
 
-                  },
-                  columnDefs: [{
-                      orderable: false,
-                      targets: [0, 1, 2]
-                  }],
-                  autoWidth: !1,
-                  language: {
-                      search: "Cari"
-                  },
+
+              $(document).on("click", "#cetak", function() {
+                  printDiv()
               });
 
-              $(document).on("click", ".pilih_jawaban", function() {
-                  var id_akses_selfcontrol = $(this).attr('id_akses_selfcontrol');
-                  var id_selfcontrol = $(this).attr('id_selfcontrol');
-                  var id_pertanyaan = $(this).attr('id_pertanyaan');
-                  var id_jawaban = $(this).attr('id_jawaban');
-
-                  var id_user = $(this).attr('id_user');
-                  var id_pasien = $(this).attr('id_pasien');
-
-                  $.ajax({
-                      url: '<?php echo base_url(); ?>selfcontrol/simpanPilihJawaban',
-                      method: 'POST',
-                      data: {
-                          id_akses_selfcontrol: id_akses_selfcontrol,
-                          id_selfcontrol: id_selfcontrol,
-                          id_pertanyaan: id_pertanyaan,
-                          id_jawaban: id_jawaban,
-                          id_user: id_user,
-                          id_pasien: id_pasien,
-                      },
-                      success: function(data) {
-                          //   console.log('hj', data);
-                          Swal.fire({
-                              icon: 'success',
-                              title: 'Jawaban dipilih',
-                              showConfirmButton: false,
-                              timer: 700
-                          })
-                      }
-                  });
-              });
-
-              $('#selesai_akses_materi').on('click', function() {
-
-                  Swal.fire({
-                      title: 'Apakah Kamu Yakin?',
-                      text: "Selesaikan materi",
-                      icon: 'warning',
-                      showCancelButton: true,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      cancelButtonText: 'Batal',
-                      confirmButtonText: 'Ya, Saya Yakin'
-                  }).then((result) => {
-                      if (result.isConfirmed) {
-                          $.ajax({
-                              url: '<?php echo base_url(); ?>selfcontrol/selesaiAksesSelfcontrol',
-                              method: 'POST',
-                              data: {
-                                  id: <?= $idakses; ?>,
-                              },
-                              success: function(data) {
-                                  // console.log(data);
-                                  Swal.fire({
-                                      icon: 'success',
-                                      title: 'Status akses berhasi diubah',
-                                      showConfirmButton: false,
-                                      timer: 1500
-                                  })
-                                  window.close();
-                              }
-                          });
-                      }
-                  })
-
-
-              });
 
           });
       </script>

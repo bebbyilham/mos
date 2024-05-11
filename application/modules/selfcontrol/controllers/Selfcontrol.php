@@ -70,6 +70,39 @@ class Selfcontrol extends MX_Controller
         echo modules::run('template/loadview', $data, $page);
     }
 
+    public function selfMonitoring()
+    {
+        $data['title'] = 'Self-Monitoring';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'selfcontrol/self_monitoring';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function selfEvaluation()
+    {
+        $data['title'] = 'Self-Evaluation';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'selfcontrol/self_evaluation';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function selfReinforcement()
+    {
+        $data['title'] = 'Self-Reinforcement';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['content'] = '';
+        $page = 'selfcontrol/self_reinforcement';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
     public function getAllSelfcontrols()
     {
         $data = $this->Selfcontrol_model->fetch_all_selfcontrol();

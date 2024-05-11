@@ -351,7 +351,37 @@
                                   <thead>
                                       <tr>
                                           <th style="width: 5%;">No.</th>
-                                          <!-- <th style="width: 5%;"></th> -->
+                                          <th style="width: 5%;"></th>
+                                          <th style="width: 25%;">Selfcontrol</th>
+                                          <th style="width: 25%;">Waktu Akses</th>
+                                          <th style="width: 10%;">Status</th>
+                                      </tr>
+                                  </thead>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div class="modal fade" id="kuesionerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <form method="post" id="form_print">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Kuesioner</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="table-responsive">
+                              <table id="tabel_kuesioner" class="table table-hover table-sm display">
+                                  <thead>
+                                      <tr>
+                                          <th style="width: 5%;">No.</th>
+                                          <th style="width: 5%;"></th>
                                           <th style="width: 25%;">Selfcontrol</th>
                                           <th style="width: 25%;">Waktu Akses</th>
                                           <th style="width: 10%;">Status</th>
@@ -739,6 +769,40 @@
                   $('#selfcontrolModal').modal('show');
               });
 
+              // kuesioner
+              $(document).on('click', '.kuesioner', function() {
+                  var id = $(this).attr('id');
+                  //   var idpasien = $(this).attr('idpasien');
+                  var namapasien = $(this).attr('namapasien');
+
+                  dataTableKuesioner = $('#tabel_kuesioner').DataTable({
+                      "serverSide": true,
+                      "processing": true,
+                      "showing": false,
+                      "paging": false,
+                      "ordering": false,
+                      "searching": false,
+                      "destroy": true,
+                      "info": false,
+                      "order": [],
+                      "ajax": {
+                          "url": "<?php echo base_url(); ?>pasien/tabelKuesioner",
+                          "type": "POST",
+                          "data": function(data) {
+                              data.id_pasien = id;
+                          },
+                      },
+                      columnDefs: [{
+                          orderable: !1,
+                      }],
+                      autoWidth: !1
+                  });
+                  $('.modal-title').text(namapasien);
+                  //   $('#idpasien').val(id);
+                  //   dataTable2.ajax.reload();
+                  $('#kuesionerModal').modal('show');
+              });
+
 
               // terapi
               $(document).on('click', '.terapi', function() {
@@ -882,6 +946,16 @@
                   var noHp = $('.detail_notelp3').text();
 
                   window.open('https://wa.me/' + noHp);
+              });
+
+              $(document).on('click', '.lihat_riwayat_selfcontrol', function() {
+                  var id = $(this).attr('id');
+                  window.open('<?= base_url(); ?>pasien/hasilselfcontrol/' + id);
+              });
+
+              $(document).on('click', '.lihat_kuesioner', function() {
+                  var id = $(this).attr('id');
+                  window.open('<?= base_url(); ?>pasien/hasilkuesioner/' + id);
               });
 
               $(document).on("click", ".ubahstatus", function() {

@@ -62,10 +62,10 @@ class Pasien extends MX_Controller
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item buat_akun" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Buat Akun</a>
                                 <a class="dropdown-item detail_pasien" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '">Detail Pasien</a>
-                               
                                 <a class="dropdown-item riwayat_edukasi" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Edukasi</a>
                                 <a class="dropdown-item pernyataan_target" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Pernyataan Target</a>
                                 <a class="dropdown-item selfcontrol" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Self Control</a>
+                                <a class="dropdown-item kuesioner" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Kuesioner</a>
                                 <a class="dropdown-item terapi" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Akses Terapi</a>
                                 <a class="dropdown-item chat" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Chat</a>
                                 <a class="dropdown-item reminder" href="#" id="' . $row->id . '" namapasien="' . $row->nama . '" >Riwayat Reminder</a>
@@ -1502,7 +1502,7 @@ class Pasien extends MX_Controller
             $no++;
             $sub_array = array();
             $sub_array[] = $no;
-
+            $sub_array[] = '<a href="#" class="status badge badge-primary lihat_riwayat_selfcontrol" id="' . $row->id . '" title="Lihat" >LIHAT</a>';
             $sub_array[] = "<b>" . $row->metode . "</b>";
             $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
             if ($row->status == 'aktif') {
@@ -1629,5 +1629,121 @@ class Pasien extends MX_Controller
             "data"                => $data
         );
         echo json_encode($output);
+    }
+
+    public function hasilselfcontrol($id)
+    {
+        $data['title'] = 'Hasil Self-control';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['id_akses_selfcontrol'] = $id;
+        $query_akses_materi = $this->db->select('
+                    akses_selfcontrol.id AS id,
+                    akses_selfcontrol.id_selfcontrol,
+                    pasien.id AS id_pasien,
+                    pasien.nama AS nama_pasien
+        ')
+            ->join('pasien', 'pasien.id = akses_selfcontrol.id_pasien', 'LEFT')
+            ->get_where('akses_selfcontrol', ['akses_selfcontrol.id' => $id])->row_array();
+        $id_selfcontrol = $query_akses_materi['id_selfcontrol'];
+        $data['idk'] = $id_selfcontrol;
+        $data['idakses'] = $id;
+        $data['namapasien'] = $query_akses_materi['nama_pasien'];
+
+        $data['data_materi'] =
+            $this->db->select('
+                            self_control.metode,
+                            list_selfcontrol.link
+                            ')
+            ->join('list_selfcontrol', 'list_selfcontrol.id_selfcontrol = self_control.id', 'LEFT')
+            ->get_where('self_control', ['self_control.id' => $id_selfcontrol])->result_array();
+
+        $data['content'] = '';
+        $page = 'pasien/hasil_selfcontrol';
+        echo modules::run('template/loadview', $data, $page);
+    }
+
+    public function tabelKuesioner()
+    {
+        $fetch_data = $this->Pasien_model->make_datatables_akses_kuesioner();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+
+
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+            $sub_array[] = '<a href="#" class="badge badge-primary lihat_kuesioner" id="' . $row->id . '" title="Lihat" >LIHAT</a>';
+            $sub_array[] = "<b>" . substr($row->keterangan, 0, 25) . "</b>";
+            $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            if ($row->status == 'aktif') {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-primary">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            } else {
+                $sub_array[] = '
+                <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span class="badge badge-success">' . $row->status . '</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
+                        </div>
+                </div>';
+            }
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Pasien_model->get_all_data_akses_kuesioner(),
+            "recordsFiltered"     => $this->Pasien_model->get_filtered_data_akses_kuesioner(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function hasilkuesioner($id)
+    {
+        $data['title'] = 'Hasil kuesioner';
+        $data['user'] = $this->db->get_where('user', ['username' =>
+        $this->session->userdata('username')])->row_array();
+
+        $data['id_akses_materi'] = $id;
+        $query_akses_materi = $this->db->select('
+                    akses_kuesioner.id AS id,
+                    akses_kuesioner.id_kuesioner,
+                    pasien.id AS id_pasien,
+                    pasien.nama AS nama_pasien
+        ')
+            ->join('pasien', 'pasien.id = akses_kuesioner.id_pasien', 'LEFT')
+            ->get_where('akses_kuesioner', ['akses_kuesioner.id' => $id])->row_array();
+        $id_kuesioner = $query_akses_materi['id_kuesioner'];
+        $data['idk'] = $id_kuesioner;
+        $data['idakses'] = $id;
+        $data['namapasien'] = $query_akses_materi['nama_pasien'];
+
+        $data['data_materi'] =
+            $this->db->select('
+                            kuesioner.keterangan,
+                            list_kuesioner.link
+                            ')
+            ->join('list_kuesioner', 'list_kuesioner.id_kuesioner = kuesioner.id', 'LEFT')
+            ->get_where('kuesioner', ['kuesioner.id' => $id_kuesioner])->result_array();
+
+        $data['content'] = '';
+        $page = 'pasien/hasil_kuesioner';
+        echo modules::run('template/loadview', $data, $page);
     }
 }
