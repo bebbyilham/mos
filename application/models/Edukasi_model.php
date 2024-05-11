@@ -149,7 +149,7 @@
             pegawai.gelar_depan,
             pegawai.gelar_belakang
             ');
-            // $this->db->where('id_list_edukasi', $_POST['id_konten_edukasi']);
+            $this->db->where('profesi', 2);
             $this->db->from('pegawai');
             if (($_POST["search"]["value"])) {
                 $this->db->like('nama_pegawai', $_POST["search"]["value"]);
@@ -198,16 +198,57 @@
 
         public function fetch_single_konten($id)
         {
-            $this->db->where('id', $id);
+            $this->db->where('konten_edukasi.id', $id);
+            $this->db->join('list_konten_edukasi', 'list_konten_edukasi.id_edukasi = konten_edukasi.id', 'LEFT');
             $query = $this->db->get('konten_edukasi');
             return $query->result();
         }
 
-        public function fetch_single_target($id)
+        //tabel edukasi
+        var $order_columnE = array(null, 'judul', null, 'status', 'created_at', null);
+        public function make_query_edukasi()
         {
-            $this->db->where('id', $id);
-            $query = $this->db->get('pernyataan_target');
+            // $id_pasien = $_POST['idpasien'];
+            $this->db->select('*');
+            // $this->db->where('jenis_layanan', 2);
+            $this->db->from('konten_edukasi');
+            if (($_POST["search"]["value"])) {
+                $this->db->like('no_registrasi', $_POST["search"]["value"]);
+            }
+
+            if (isset($_POST["order"])) {
+                $this->db->order_by($this->order_columnE[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            } else {
+                $this->db->order_by('id', 'ASC');
+            }
+        }
+
+
+        public function make_datatables_edukasi()
+        {
+            $this->make_query_edukasi();
+
+            if ($_POST["length"] != -1) {
+                $this->db->limit($_POST['length'], $_POST['start']);
+            }
+            $query = $this->db->get();
             return $query->result();
         }
+
+        public function get_filtered_data_edukasi()
+        {
+            $this->make_query_edukasi();
+            $query = $this->db->get();
+
+            return $query->num_rows();
+        }
+
+        public function get_all_data_edukasi()
+        {
+            $this->db->select("*");
+            $this->db->from('konten_edukasi');
+            return $this->db->count_all_results();
+        }
+        //end edukasi
     }
     ?>

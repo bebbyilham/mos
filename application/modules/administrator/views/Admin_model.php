@@ -1549,6 +1549,14 @@ class Admin_model extends CI_Model
             $data
         );
     }
+    public function ubah_jawaban_konten_edukasi($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'jawaban_konten_edukasi',
+            $data
+        );
+    }
 
     public function simpan_list_konten_edukasi_pertanyaan($data)
     {
@@ -1701,277 +1709,16 @@ class Admin_model extends CI_Model
         );
     }
 
-    public function simpan_pernyataantarget($data)
-    {
-        $this->db->insert('pernyataan_target', $data);
-    }
-
-    //tabel pernyataantarget
-    var $order_columnPT = array(null, 'judul', null, 'status', 'created_at', null);
-    public function make_query_pernyataantarget()
-    {
-        // $id_pasien = $_POST['idpasien'];
-        $this->db->select('*');
-        // $this->db->where('jenis_layanan', 2);
-        $this->db->from('pernyataan_target');
-        if (($_POST["search"]["value"])) {
-            $this->db->like('no_registrasi', $_POST["search"]["value"]);
-        }
-
-        if (isset($_POST["order"])) {
-            $this->db->order_by($this->order_columnPT[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else {
-            $this->db->order_by('id', 'ASC');
-        }
-    }
-
-
-    public function make_datatables_pernyataantarget()
-    {
-        $this->make_query_pernyataantarget();
-
-        if ($_POST["length"] != -1) {
-            $this->db->limit($_POST['length'], $_POST['start']);
-        }
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    public function get_filtered_data_pernyataantarget()
-    {
-        $this->make_query_pernyataantarget();
-        $query = $this->db->get();
-
-        return $query->num_rows();
-    }
-
-    public function get_all_data_pernyataantarget()
-    {
-        $this->db->select("*");
-        $this->db->from('pernyataan_target');
-        return $this->db->count_all_results();
-    }
-    //end pernyataantarget
-
-    public function simpan_list_target($data)
-    {
-        $this->db->insert('list_pernyataan_target', $data);
-    }
-
-    //tabel lsit target
-    var $order_columnLT = array(
+    //tabel pemantauan
+    var $order_columnSC = array(
         null, 'judul', null, 'status', 'created_at', null
     );
-    public function make_query_list_pernyataan_target()
-    {
-        $this->db->select('*');
-        $this->db->where('id_target', $_POST['id_target']);
-        $this->db->from('list_pernyataan_target');
-        if (($_POST["search"]["value"])) {
-            $this->db->like('keterangan', $_POST["search"]["value"]);
-        }
-
-        if (isset($_POST["order"])) {
-            $this->db->order_by($this->order_columnLT[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else {
-            $this->db->order_by('id', 'ASC');
-        }
-    }
-
-
-    public function make_datatables_list_pernyataan_target()
-    {
-        $this->make_query_list_pernyataan_target();
-
-        if ($_POST["length"] != -1) {
-            $this->db->limit($_POST['length'], $_POST['start']);
-        }
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    public function get_filtered_data_list_pernyataan_target()
-    {
-        $this->make_query_list_pernyataan_target();
-        $query = $this->db->get();
-
-        return $query->num_rows();
-    }
-
-    public function get_all_data_list_pernyataan_target()
-    {
-        $this->db->select("*");
-        $this->db->from('list_pernyataan_target');
-        return $this->db->count_all_results();
-    }
-    //end edukasi
-
-    public function ubah_status_list_pernyataan_target($data, $id)
-    {
-        $this->db->where('id', $id);
-        $this->db->update(
-            'list_pernyataan_target',
-            $data
-        );
-    }
-
-    public function simpan_pertanyaan_target($data)
-    {
-        $this->db->insert('pertanyaan_target', $data);
-    }
-    public function ubah_status_pertanyaan_target($data, $id)
-    {
-        $this->db->where('id', $id);
-        $this->db->update(
-            'pertanyaan_target',
-            $data
-        );
-    }
-
-    //tabel target pertanyaan
-    var $order_columnTP = array(null, 'judul', null, 'status', 'created_at', null);
-    public function make_query_target_pertanyaan()
-    {
-        $this->db->select('*');
-        $this->db->where('id_list_target', $_POST['id_list_target']);
-        $this->db->from('pertanyaan_target');
-        if (($_POST["search"]["value"])) {
-            $this->db->like('pertanyaan', $_POST["search"]["value"]);
-        }
-
-        if (isset($_POST["order"])) {
-            $this->db->order_by($this->order_columnTP[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else {
-            $this->db->order_by('id', 'ASC');
-        }
-    }
-
-
-    public function make_datatables_target_pertanyaan()
-    {
-        $this->make_query_target_pertanyaan();
-
-        if ($_POST["length"] != -1) {
-            $this->db->limit($_POST['length'], $_POST['start']);
-        }
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    public function get_filtered_data_target_pertanyaan()
-    {
-        $this->make_query_target_pertanyaan();
-        $query = $this->db->get();
-
-        return $query->num_rows();
-    }
-
-    public function get_all_data_target_pertanyaan()
-    {
-        $this->db->select("*");
-        $this->db->from('pertanyaan_target');
-        return $this->db->count_all_results();
-    }
-    //end target pertanyaan
-
-    public function ubah_status_target_pertanyaan($data, $id)
-    {
-        $this->db->where('id', $id);
-        $this->db->update(
-            'pertanyaan_target',
-            $data
-        );
-    }
-
-    //tabel pernyataan jawaban
-    var $order_columnPJ = array(null, 'judul', null, 'status', 'created_at', null);
-    public function make_query_pernyataan_target_jawaban()
-    {
-        $this->db->select('*');
-        $this->db->where('id_pertanyaan', $_POST['id_pertanyaan']);
-        $this->db->from('jawaban_pernyataan_target');
-        if (($_POST["search"]["value"])) {
-            $this->db->like('jawaban', $_POST["search"]["value"]);
-        }
-
-        if (isset($_POST["order"])) {
-            $this->db->order_by($this->order_columnPJ[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else {
-            $this->db->order_by('id', 'ASC');
-        }
-    }
-
-
-    public function make_datatables_pernyataan_target_jawaban()
-    {
-        $this->make_query_pernyataan_target_jawaban();
-
-        if ($_POST["length"] != -1) {
-            $this->db->limit($_POST['length'], $_POST['start']);
-        }
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    public function get_filtered_data_pernyataan_target_jawaban()
-    {
-        $this->make_query_pernyataan_target_jawaban();
-        $query = $this->db->get();
-
-        return $query->num_rows();
-    }
-
-    public function get_all_data_pernyataan_target_jawaban()
-    {
-        $this->db->select("*");
-        $this->db->from('jawaban_pernyataan_target');
-        return $this->db->count_all_results();
-    }
-    //end pernyataan jawaban
-
-    // pernyataan jawaban
-    public function simpan_list_pernyataan_target_jawaban($data)
-    {
-        $this->db->insert('jawaban_pernyataan_target', $data);
-    }
-    public function ubah_status_pernyataan_target_jawaban($data, $id)
-    {
-        $this->db->where('id', $id);
-        $this->db->update(
-            'jawaban_pernyataan_target',
-            $data
-        );
-    }
-
-    public function fetch_all_jawaban_pernyataan($id)
-    {
-        $this->db->where('id_pertanyaan', $id);
-        $query = $this->db->get('jawaban_pernyataan_target');
-        return $query->result();
-    }
-
-    public function simpan_jawaban_betul_pernyataan($data, $id)
-    {
-        $this->db->where('id', $id);
-        $this->db->update(
-            'pertanyaan_target',
-            $data
-        );
-    }
-
-    public function simpan_self_control($data)
-    {
-        $this->db->insert('self_control', $data);
-    }
-
-    //tabel selfcontrol
-    var $order_columnSC = array(null, 'judul', null, 'status', 'created_at', null);
-    public function make_query_selfcontrol()
+    public function make_query_pemantauan()
     {
         // $id_pasien = $_POST['idpasien'];
         $this->db->select('*');
         // $this->db->where('jenis_layanan', 2);
-        $this->db->from('self_control');
+        $this->db->from('pemantauan');
         if (($_POST["search"]["value"])) {
             $this->db->like('deskripsi', $_POST["search"]["value"]);
         }
@@ -1984,47 +1731,53 @@ class Admin_model extends CI_Model
     }
 
 
-    public function make_datatables_selfcontrol()
+    public function make_datatables_pemantauan()
     {
-        $this->make_query_selfcontrol();
+        $this->make_query_pemantauan();
 
-        if ($_POST["length"] != -1) {
+        if (
+            $_POST["length"] != -1
+        ) {
             $this->db->limit($_POST['length'], $_POST['start']);
         }
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function get_filtered_data_selfcontrol()
+    public function get_filtered_data_pemantauan()
     {
-        $this->make_query_selfcontrol();
+        $this->make_query_pemantauan();
         $query = $this->db->get();
 
         return $query->num_rows();
     }
 
-    public function get_all_data_selfcontrol()
+    public function get_all_data_pemantauan()
     {
         $this->db->select("*");
-        $this->db->from('self_control');
+        $this->db->from('pemantauan');
         return $this->db->count_all_results();
     }
-    //end selfcontrol
-
-    public function simpan_list_selfcontrol($data)
+    //end pemantauan
+    public function simpan_pemantauan($data)
     {
-        $this->db->insert('list_selfcontrol', $data);
+        $this->db->insert('pemantauan', $data);
+    }
+
+    public function simpan_list_pemantauan($data)
+    {
+        $this->db->insert('list_pemantauan', $data);
     }
 
     //tabel lsit target
     var $order_columnLS = array(
         null, 'judul', null, 'status', 'created_at', null
     );
-    public function make_query_list_selfcontrol()
+    public function make_query_list_pemantauan()
     {
         $this->db->select('*');
-        $this->db->where('id_selfcontrol', $_POST['id_metode']);
-        $this->db->from('list_selfcontrol');
+        $this->db->where('id_pemantauan', $_POST['id_pemantauan']);
+        $this->db->from('list_pemantauan');
         if (($_POST["search"]["value"])) {
             $this->db->like('keterangan', $_POST["search"]["value"]);
         }
@@ -2037,51 +1790,58 @@ class Admin_model extends CI_Model
     }
 
 
-    public function make_datatables_list_selfcontrol()
+    public function make_datatables_list_pemantauan()
     {
-        $this->make_query_list_selfcontrol();
+        $this->make_query_list_pemantauan();
 
-        if ($_POST["length"] != -1) {
+        if (
+            $_POST["length"] != -1
+        ) {
             $this->db->limit($_POST['length'], $_POST['start']);
         }
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function get_filtered_data_list_selfcontrol()
+    public function get_filtered_data_list_pemantauan()
     {
-        $this->make_query_list_selfcontrol();
+        $this->make_query_list_pemantauan();
         $query = $this->db->get();
 
         return $query->num_rows();
     }
 
-    public function get_all_data_list_selfcontrol()
+    public function get_all_data_list_pemantauan()
     {
         $this->db->select("*");
-        $this->db->from('list_selfcontrol');
+        $this->db->from('list_pemantauan');
         return $this->db->count_all_results();
     }
-    //end selfcontrol
+    //end pemantauan
 
-    public function ubah_status_list_selfcontrol($data, $id)
-    {
+    public function ubah_status_list_pemantauan(
+        $data,
+        $id
+    ) {
         $this->db->where('id', $id);
         $this->db->update(
-            'list_selfcontrol',
+            'list_pemantauan',
             $data
         );
     }
 
-    //tabel selfcontrol pertanyaan
+    //tabel pemantauan pertanyaan
     var $order_columnSP = array(
         null, 'judul', null, 'status', 'created_at', null
     );
-    public function make_query_selfcontrol_pertanyaan()
+    public function make_query_pemantauan_pertanyaan()
     {
         $this->db->select('*');
-        $this->db->where('id_list_selfcontrol', $_POST['id_list_selfcontrol']);
-        $this->db->from('pertanyaan_selfcontrol');
+        $this->db->where(
+            'id_list_pemantauan',
+            $_POST['id_list_pemantauan']
+        );
+        $this->db->from('pertanyaan_pemantauan');
         if (($_POST["search"]["value"])) {
             $this->db->like('pertanyaan', $_POST["search"]["value"]);
         }
@@ -2094,9 +1854,9 @@ class Admin_model extends CI_Model
     }
 
 
-    public function make_datatables_selfcontrol_pertanyaan()
+    public function make_datatables_pemantauan_pertanyaan()
     {
-        $this->make_query_selfcontrol_pertanyaan();
+        $this->make_query_pemantauan_pertanyaan();
 
         if ($_POST["length"] != -1) {
             $this->db->limit($_POST['length'], $_POST['start']);
@@ -2105,51 +1865,53 @@ class Admin_model extends CI_Model
         return $query->result();
     }
 
-    public function get_filtered_data_selfcontrol_pertanyaan()
+    public function get_filtered_data_pemantauan_pertanyaan()
     {
-        $this->make_query_selfcontrol_pertanyaan();
+        $this->make_query_pemantauan_pertanyaan();
         $query = $this->db->get();
 
         return $query->num_rows();
     }
 
-    public function get_all_data_selfcontrol_pertanyaan()
+    public function get_all_data_pemantauan_pertanyaan()
     {
         $this->db->select("*");
-        $this->db->from('pertanyaan_selfcontrol');
+        $this->db->from('pertanyaan_pemantauan');
         return $this->db->count_all_results();
     }
     //end target pertanyaan
 
-    public function ubah_status_selfcontrol_pertanyaan($data, $id)
+    public function ubah_status_pemantauan_pertanyaan($data, $id)
     {
         $this->db->where('id', $id);
         $this->db->update(
-            'pertanyaan_selfcontrol',
+            'pertanyaan_pemantauan',
             $data
         );
     }
 
-    public function simpan_pertanyaan_selfcontrol($data)
+    public function simpan_pertanyaan_pemantauan($data)
     {
-        $this->db->insert('pertanyaan_selfcontrol', $data);
+        $this->db->insert('pertanyaan_pemantauan', $data);
     }
-    public function ubah_status_pertanyaan_selfcontrol($data, $id)
+    public function ubah_status_pertanyaan_pemantauan($data, $id)
     {
         $this->db->where('id', $id);
         $this->db->update(
-            'pertanyaan_selfcontrol',
+            'pertanyaan_pemantauan',
             $data
         );
     }
 
-    //tabel selfcontrol jawaban
-    var $order_columnSJ = array(null, 'judul', null, 'status', 'created_at', null);
-    public function make_query_self_control_jawaban()
+    //tabel pemantauan jawaban
+    var $order_columnSJ = array(
+        null, 'judul', null, 'status', 'created_at', null
+    );
+    public function make_query_pemantauan_jawaban()
     {
         $this->db->select('*');
         $this->db->where('id_pertanyaan', $_POST['id_pertanyaan']);
-        $this->db->from('jawaban_self_control');
+        $this->db->from('jawaban_pemantauan');
         if (($_POST["search"]["value"])) {
             $this->db->like('jawaban', $_POST["search"]["value"]);
         }
@@ -2162,9 +1924,9 @@ class Admin_model extends CI_Model
     }
 
 
-    public function make_datatables_self_control_jawaban()
+    public function make_datatables_pemantauan_jawaban()
     {
-        $this->make_query_self_control_jawaban();
+        $this->make_query_pemantauan_jawaban();
 
         if ($_POST["length"] != -1) {
             $this->db->limit($_POST['length'], $_POST['start']);
@@ -2173,75 +1935,62 @@ class Admin_model extends CI_Model
         return $query->result();
     }
 
-    public function get_filtered_data_self_control_jawaban()
+    public function get_filtered_data_pemantauan_jawaban()
     {
-        $this->make_query_self_control_jawaban();
+        $this->make_query_pemantauan_jawaban();
         $query = $this->db->get();
 
         return $query->num_rows();
     }
 
-    public function get_all_data_self_control_jawaban()
+    public function get_all_data_pemantauan_jawaban()
     {
         $this->db->select("*");
-        $this->db->from('jawaban_self_control');
+        $this->db->from('jawaban_pemantauan');
         return $this->db->count_all_results();
     }
-    //end selfcontrol jawaban
+    //end pemantauan jawaban
 
-    // selfcontrol jawaban
-    public function simpan_list_self_control_jawaban($data)
+    // pemantauan jawaban
+    public function simpan_list_pemantauan_jawaban($data)
     {
-        $this->db->insert('jawaban_self_control', $data);
+        $this->db->insert('jawaban_pemantauan', $data);
     }
-    public function ubah_status_self_control_jawaban($data, $id)
+    public function ubah_status_pemantauan_jawaban($data, $id)
     {
         $this->db->where('id', $id);
         $this->db->update(
-            'jawaban_self_control',
+            'jawaban_pemantauan',
             $data
         );
     }
 
-    public function fetch_all_jawaban_self_control($id)
-    {
-        $this->db->where('id_pertanyaan', $id);
-        $query = $this->db->get('jawaban_self_control');
-        return $query->result();
-    }
-
-    public function simpan_jawaban_betul_self_control($data, $id)
-    {
-        $this->db->where('id', $id);
-        $this->db->update(
-            'pertanyaan_selfcontrol',
-            $data
-        );
-    }
-
-    var $order_columnT = array(
+    //demografi
+    //tabel demografi
+    var $order_columnDM = array(
         null, 'judul', null, 'status', 'created_at', null
     );
-    public function make_query_list_terapi()
+    public function make_query_demografi()
     {
+        // $id_pasien = $_POST['idpasien'];
         $this->db->select('*');
-        // $this->db->where('id_terapi', $_POST['id_metode']);
-        $this->db->from('list_terapi');
+        // $this->db->where('jenis_layanan', 2);
+        $this->db->from('demografi');
         if (($_POST["search"]["value"])) {
-            $this->db->like('keterangan', $_POST["search"]["value"]);
+            $this->db->like('deskripsi', $_POST["search"]["value"]);
         }
 
         if (isset($_POST["order"])) {
-            $this->db->order_by($this->order_columnT[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+            $this->db->order_by($this->order_columnDM[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
         } else {
             $this->db->order_by('id', 'ASC');
         }
     }
 
 
-    public function make_datatables_list_terapi()
+    public function make_datatables_demografi()
     {
-        $this->make_query_list_terapi();
+        $this->make_query_demografi();
 
         if (
             $_POST["length"] != -1
@@ -2252,37 +2001,245 @@ class Admin_model extends CI_Model
         return $query->result();
     }
 
-    public function get_filtered_data_list_terapi()
+    public function get_filtered_data_demografi()
     {
-        $this->make_query_list_terapi();
+        $this->make_query_demografi();
         $query = $this->db->get();
 
         return $query->num_rows();
     }
 
-    public function get_all_data_list_terapi()
+    public function get_all_data_demografi()
     {
         $this->db->select("*");
-        $this->db->from('list_terapi');
+        $this->db->from('demografi');
         return $this->db->count_all_results();
     }
-    //end terapi
-
-    public function simpan_list_terapi($data)
+    //end demografi
+    public function simpan_demografi($data)
     {
-        $this->db->insert('list_terapi', $data);
+        $this->db->insert('demografi', $data);
     }
 
-    public function ubah_status_list_terapi(
+    public function simpan_list_demografi($data)
+    {
+        $this->db->insert('list_demografi', $data);
+    }
+
+    //tabel lsit target
+    var $order_columnLSD = array(
+        null, 'judul', null, 'status', 'created_at', null
+    );
+    public function make_query_list_demografi()
+    {
+        $this->db->select('*');
+        $this->db->where('id_demografi', $_POST['id_demografi']);
+        $this->db->from('list_demografi');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('keterangan', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnLSD[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_list_demografi()
+    {
+        $this->make_query_list_demografi();
+
+        if (
+            $_POST["length"] != -1
+        ) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_list_demografi()
+    {
+        $this->make_query_list_demografi();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_list_demografi()
+    {
+        $this->db->select("*");
+        $this->db->from('list_demografi');
+        return $this->db->count_all_results();
+    }
+    //end demografi
+
+    public function ubah_status_list_demografi(
         $data,
         $id
     ) {
         $this->db->where('id', $id);
         $this->db->update(
-            'list_terapi',
+            'list_demografi',
             $data
         );
     }
+
+    //tabel demografi pertanyaan
+    var $order_columnSPD = array(
+        null, 'judul', null, 'status', 'created_at', null
+    );
+    public function make_query_demografi_pertanyaan()
+    {
+        $this->db->select('*');
+        $this->db->where(
+            'id_list_demografi',
+            $_POST['id_list_demografi']
+        );
+        $this->db->from('pertanyaan_demografi');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('pertanyaan', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnSPD[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_demografi_pertanyaan()
+    {
+        $this->make_query_demografi_pertanyaan();
+
+        if ($_POST["length"] != -1) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_demografi_pertanyaan()
+    {
+        $this->make_query_demografi_pertanyaan();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_demografi_pertanyaan()
+    {
+        $this->db->select("*");
+        $this->db->from('pertanyaan_demografi');
+        return $this->db->count_all_results();
+    }
+    //end target pertanyaan
+
+    public function ubah_status_demografi_pertanyaan($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'pertanyaan_demografi',
+            $data
+        );
+    }
+
+    public function simpan_pertanyaan_demografi($data)
+    {
+        $this->db->insert('pertanyaan_demografi', $data);
+    }
+    public function ubah_status_pertanyaan_demografi($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'pertanyaan_demografi',
+            $data
+        );
+    }
+
+    //tabel demografi jawaban
+    var $order_columnSJD = array(
+        null, 'judul', null, 'status', 'created_at', null
+    );
+    public function make_query_demografi_jawaban()
+    {
+        $this->db->select('*');
+        $this->db->where('id_pertanyaan', $_POST['id_pertanyaan']);
+        $this->db->from('jawaban_demografi');
+        if (($_POST["search"]["value"])) {
+            $this->db->like('jawaban', $_POST["search"]["value"]);
+        }
+
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_columnSJD[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('id', 'ASC');
+        }
+    }
+
+
+    public function make_datatables_demografi_jawaban()
+    {
+        $this->make_query_demografi_jawaban();
+
+        if (
+            $_POST["length"] != -1
+        ) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_filtered_data_demografi_jawaban()
+    {
+        $this->make_query_demografi_jawaban();
+        $query = $this->db->get();
+
+        return $query->num_rows();
+    }
+
+    public function get_all_data_demografi_jawaban()
+    {
+        $this->db->select("*");
+        $this->db->from('jawaban_demografi');
+        return $this->db->count_all_results();
+    }
+    //end demografi jawaban
+
+    // demografi jawaban
+    public function simpan_list_demografi_jawaban($data)
+    {
+        $this->db->insert('jawaban_demografi', $data);
+    }
+    public function ubah_status_demografi_jawaban($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'jawaban_demografi',
+            $data
+        );
+    }
+
+    public function fetch_all_jawaban_pemantauan($id)
+    {
+        $this->db->where('id_pertanyaan', $id);
+        $query = $this->db->get('jawaban_pemantauan');
+        return $query->result();
+    }
+
+    public function simpan_jawaban_betul_pemantauan($data, $id)
+    {
+        $this->db->where('id', $id);
+        $this->db->update(
+            'pertanyaan_pemantauan',
+            $data
+        );
+    }
+
 
     //tabel kuesioner
     var $order_columnSCK = array(
@@ -2351,10 +2308,7 @@ class Admin_model extends CI_Model
     public function make_query_list_kuesioner()
     {
         $this->db->select('*');
-        $this->db->where(
-            'id_kuesioner',
-            $_POST['id_kuesioner']
-        );
+        $this->db->where('id_kuesioner', $_POST['id_kuesioner']);
         $this->db->from('list_kuesioner');
         if (($_POST["search"]["value"])) {
             $this->db->like('keterangan', $_POST["search"]["value"]);

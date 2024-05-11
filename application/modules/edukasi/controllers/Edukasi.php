@@ -246,4 +246,72 @@ class Edukasi extends MX_Controller
 
         $this->Edukasi_model->simpan_selesai_akses_materi($data, $_POST['id']);
     }
+
+    public function tabeledukasi()
+    {
+        $fetch_data = $this->Edukasi_model->make_datatables_edukasi();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($fetch_data as $row) {
+            $no++;
+            $sub_array = array();
+            $sub_array[] = $no;
+            $sub_array[] = '<a href="#" class="fa fa-pen-square fa-lg ml-2 mr-2 text-primary infoedukasi" id="' . $row->id . '" data-toggle="modal" data-target="#staticBackdrop" title="akses"></a>';
+            $sub_array[] = "<b>" . $row->judul . "</b><br>" . strtoupper("$row->jenis");
+            //     $sub_array[] = substr($row->description, 0, 100);
+            //     if ($row->status == 'aktif') {
+            //         $sub_array[] = '
+            //         <div class="dropdown">
+            //                 <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            //                   <span class="badge badge-success">' . $row->status . '</span>
+            //                 </a>
+            //                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+            //                     <a id="' . $row->id . '" status="1" class="dropdown-item ubahstatus">Draft</a>
+            //                     <a id="' . $row->id . '" status="2" class="dropdown-item ubahstatus">Published</a>
+            //                 </div>
+            //         </div>';
+            //     } else {
+            //         $sub_array[] = '
+            //         <div class="dropdown">
+            //                 <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            //                   <span class="badge badge-secondary">' . $row->status . '</span>
+            //                 </a>
+            //                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+            //                     <a id="' . $row->id . '" status="draft" class="dropdown-item ubahstatus">Draft</a>
+            //                     <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
+            //                     <a id="' . $row->id . '" status="non aktif" class="dropdown-item ubahstatus">Non Aktif</a>
+            //                 </div>
+            //         </div>';
+            //     }
+            //     $sub_array[] = '<span href="#" class="status badge badge-primary" title="Diunggah" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
+            //     $sub_array[] = '
+            //     <a href="#" class="fa fa-images ml-2 mr-2 kontenedukasi" id="' . $row->id . '" judul="' . $row->judul . '" jenis="' . $row->jenis . '" data-toggle="modal" data-target="#staticBackdrop" title="Konten"></a>
+            //     <a href="#" class="fa fa-info-circle ml-2 mr-2 infoedukasi" id="' . $row->id . '" judul="' . $row->judul . '" jenis="' . $row->jenis . '" data-toggle="modal" data-target="#staticBackdrop" title="Info"></a>
+            //   ';
+
+            $data[] = $sub_array;
+        }
+
+        $output = array(
+            "draw"                => intval($_POST['draw']),
+            "recordsTotal"        => $this->Edukasi_model->get_all_data_edukasi(),
+            "recordsFiltered"     => $this->Edukasi_model->get_filtered_data_edukasi(),
+            "data"                => $data
+        );
+        echo json_encode($output);
+    }
+
+    public function infoedukasi()
+    {
+        $output = array();
+        $data = $this->Edukasi_model->fetch_single_konten($_POST['id']);
+
+        foreach ($data as $row) {
+            $output['judul'] = $row->judul;
+            $output['description'] = $row->description;
+            $output['link'] = $row->link;
+            $output['keterangan'] = $row->keterangan;
+        }
+        echo json_encode($output);
+    }
 }

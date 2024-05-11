@@ -1,5 +1,5 @@
   <!-- Header -->
-  <div class="header bg-gradient-primary pb-6">
+  <div class="header bg-gradient-orange pb-6">
       <div class="container-fluid">
           <div class="header-body">
               <div class="row align-items-center py-4">
@@ -7,7 +7,7 @@
                       <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
                   </div>
                   <div class="col-lg-6 col-5 text-right">
-                      <!-- <button type="button" id="tambah_akses_materi" class="btn btn-sm btn-neutral">Tambah</button> -->
+                      <button type="button" id="tambah_akses_kuesioner" class="btn btn-sm btn-neutral">Tambah</button>
                   </div>
               </div>
               <!-- Card stats -->
@@ -30,18 +30,18 @@
           <div class="col">
               <div class="card shadow-sm">
                   <div class="card-header">
-                      <h3 class="card-title">Akses Materi</h3>
+                      <h3 class="card-title">Data</h3>
                   </div>
                   <div class="card-body">
                       <div class="table-responsive">
-                          <table id="tabel_konten_edukasi" class="table table-hover table-sm display">
+                          <table id="tabel_kuesioner" class="table table-hover table-sm display">
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
                                       <th style="width: 5%;"></th>
-                                      <th style="width: 25%;">Materi</th>
-                                      <!-- <th style="width: 25%;">Waktu Akses</th>
-                                      <th style="width: 10%;">Status</th> -->
+                                      <th style="width: 25%;">Kuesioner</th>
+                                      <th style="width: 25%;">Waktu</th>
+                                      <th style="width: 10%;">Status</th>
                                   </tr>
                               </thead>
                           </table>
@@ -51,7 +51,7 @@
           </div>
       </div>
       <!-- Modal Create User -->
-      <div class="modal fade" id="modal_akses_materi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal fade" id="modal_akses_kuesioner" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">
                   <div class="modal-header">
@@ -60,40 +60,24 @@
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <form method="post" id="form_akses_materi">
+                  <form method="post" id="form_akses_kuesioner">
                       <div class="modal-body">
                           <div class="form-group">
                               <input type="hidden" name="id_user" id="id_user" value="<?php echo $user['id_user'] ?>">
                               <input type="hidden" name="id_pasien" id="id_pasien" value="<?php echo $user['pasien_id'] ?>">
-                              <label class="form-control-label" for="input-last-name">Materi</label>
+                              <input type="hidden" name="pilih_kuesioner" id="pilih_kuesioner" value="Self-examination Relaxation">
+                              <label class="form-control-label" for="input-last-name">Pilih</label>
                               <div class="input-group">
-                                  <select class="form-control rounded-0 selecpicker" id="materi" name="materi" data-live-search="true"></select>
+                                  <select class="form-control rounded-0 selecpicker" id="kuesioner" name="kuesioner" data-live-search="true"></select>
                               </div>
                           </div>
                       </div>
                       <div class="modal-footer">
                           <div class="text-right">
-                              <button type="submit" class="btn btn-primary ">Simpan</button>
+                              <button type="submit" class="btn btn-primary">Simpan</button>
                           </div>
                       </div>
                   </form>
-              </div>
-          </div>
-      </div>
-      <div class="modal fade" id="modal_info_edukasi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h4 class="modal-title text-primary"></h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="data_info">
-
-                      </div>
-                  </div>
               </div>
           </div>
       </div>
@@ -101,94 +85,74 @@
           $(document).ready(function() {
               $('#loading').hide();
               // DataTable
-              var dataTable = $('#tabel_konten_edukasi').DataTable({
+              var dataTable = $('#tabel_kuesioner').DataTable({
                   "serverSide": true,
                   "responsive": true,
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>edukasi/tabeledukasi",
+                      "url": "<?php echo base_url(); ?>kuesioner/tabelkuesioner",
                       "type": "POST",
                       "data": function(data) {
-                          data.id_user = <?= $user['id_user']; ?>
+                          data.id_user = <?= $user['id_user']; ?>,
+                              data.tipe = 1
                       },
 
                   },
                   columnDefs: [{
                       orderable: false,
-                      targets: [0, 1, 2]
+                      targets: [0, 1, 2, 3, 4]
                   }],
                   autoWidth: !1,
                   language: {
-                      search: "Cari"
+                      search: "Cari",
+                      paginate: {
+                          "next": "<i class='ni ni-bold-right text-primary'></i>",
+                          "previous": "<i class='ni ni-bold-left text-primary'></i>"
+                      }
                   },
               });
-
+              var getkuesioner = $('#pilih_kuesioner').val();
               $.ajax({
-                  url: "<?php echo base_url(); ?>edukasi/getAllmateris",
+                  url: "<?php echo base_url(); ?>kuesioner/getKuesionerPosttest",
                   method: "POST",
                   dataType: 'JSON',
+                  data: {
+                      kuesioner: getkuesioner,
+                  },
                   success: function(data) {
                       console.log(data);
                       var html = '';
                       var i;
-                      html += '<option selected value="0">Pilih Materi</option>';
+
                       for (i = 0; i < data.length; i++) {
-                          html += '<option value="' + data[i].id + '">' + data[i].judul + '</option>';
+                          html += '<option value="' + data[i].id + '">' + data[i].keterangan + '</option>';
                       }
-                      $('#materi').html(html);
-                      $('#materi').selectpicker('refresh');
+                      $('#kuesioner').html(html);
+                      $('#kuesioner').selectpicker('refresh');
                   }
               });
 
-              // akses materi
-              $('#tambah_akses_materi').on('click', function() {
+              // akses 
+              $('#tambah_akses_kuesioner').on('click', function() {
 
-                  $('#modal_akses_materi').modal('show');
-                  $('.modal-title').text('Tambah File');
+                  $('#modal_akses_kuesioner').modal('show');
+                  $('.modal-title').text('Tambah');
               });
 
-              $(document).on('click', '.akses_materi', function() {
-                  var id_akses_materi = $(this).attr('id');
-                  window.open('<?= base_url(); ?>edukasi/aksesmateri/' + id_akses_materi);
-              });
-
-              // info konten
-              $(document).on('click', '.infoedukasi', function() {
+              $(document).on('click', '.akses_kuesioner', function() {
                   var id = $(this).attr('id');
-                  $('#modal_info_edukasi').modal('show');
-                  $(".data_info").html("");
-
-
-                  $.ajax({
-                      url: '<?php echo base_url(); ?>edukasi/infoedukasi',
-                      method: 'POST',
-                      data: {
-                          id: id
-                      },
-                      dataType: 'JSON',
-                      success: function(data) {
-                          $('.modal-title').text(data.judul);
-                          $('.data_info').append(`
-                            <div class="p-2">
-                            <div class="text-center">` + data.link + `</div>
-                            <div class="text-center"><h6>` + data.keterangan + `</h6></div>
-                               <div>` + data.description + `</div>
-                               </div>
-                            `);
-                      }
-                  });
+                  window.open('<?= base_url(); ?>kuesioner/akseskuesioner/' + id);
               });
 
-
-              //submit image
-              $(document).on('submit', '#form_akses_materi', function(event) {
+              //submit
+              $(document).on('submit', '#form_akses_kuesioner', function(event) {
                   event.preventDefault();
-                  materi = $('#materi').val();
+                  kuesioner = $('#kuesioner').val();
 
                   Swal.fire({
                       title: 'Apakah Kamu Yakin?',
-                      text: "Akses materi" + materi,
+                      text: '',
                       icon: 'warning',
                       showCancelButton: true,
                       confirmButtonColor: '#3085d6',
@@ -198,7 +162,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>edukasi/simpanaksesmateri',
+                              url: '<?php echo base_url(); ?>kuesioner/simpanAkseskuesioner',
                               method: 'POST',
                               data: new FormData(this),
                               contentType: false,
@@ -211,8 +175,8 @@
                                       timer: 2000
                                   })
                                   dataTable.ajax.reload();
-                                  $('#modal_akses_materi').modal('hide');
-                                  $('#form_akses_materi')[0].reset();
+                                  $('#modal_akses_kuesioner').modal('hide');
+                                  $('#form_akses_kuesioner')[0].reset();
                               }
                           });
                       }
@@ -224,7 +188,7 @@
                   let status = $(this).attr('status')
                   Swal.fire({
                       title: 'Apakah Kamu Yakin?',
-                      text: "Upload file nilai ini?",
+                      text: "",
                       icon: 'warning',
                       showCancelButton: true,
                       confirmButtonColor: '#3085d6',
@@ -234,7 +198,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>administrator/ubahstatuskontenedukasi',
+                              url: '<?php echo base_url(); ?>kuesioner/ubahStatusAksesSelcontrol',
                               method: 'POST',
                               data: {
                                   id: id,
@@ -253,43 +217,8 @@
                           });
                       }
                   })
-
               })
 
-              $(document).on('click', '.delete', function() {
-                  var id = $(this).attr('id');
-                  var file = $(this).attr('file');
-                  Swal.fire({
-                      title: 'Apakah Kamu Yakin?',
-                      text: "Hapus file ini?",
-                      icon: 'warning',
-                      showCancelButton: true,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      cancelButtonText: 'Batal',
-                      confirmButtonText: 'Ya, Saya Yakin'
-                  }).then((result) => {
-                      if (result.isConfirmed) {
-                          $.ajax({
-                              url: '<?php echo base_url(); ?>blog/hapusimageblog',
-                              method: 'POST',
-                              data: {
-                                  id: id,
-                                  file: file,
-                              },
-                              success: function(data) {
-                                  Swal.fire({
-                                      icon: 'success',
-                                      title: data,
-                                      showConfirmButton: false,
-                                      timer: 2000
-                                  })
-                                  dataTable.ajax.reload();
-                              }
-                          });
-                      }
-                  })
-              });
 
 
           });

@@ -62,3 +62,27 @@ function check_jawaban_selfcontrol($pertanyaan_id, $id_akses_selfcontrol, $id_ja
         return "checked='checked'";
     }
 }
+
+function check_jawaban_kuesioner($pertanyaan_id, $id_akses_materi, $id_jawaban)
+{
+    $ci = get_instance();
+
+    $ci->db->where('id_pertanyaan', $pertanyaan_id);
+    $ci->db->where('id_akses_kuesioner', $id_akses_materi);
+    $ci->db->where('id_jawaban', $id_jawaban);
+    $result = $ci->db->get('pilih_jawaban_kuesioner');
+
+    if ($result->num_rows() > 0) {
+        return "checked='checked'";
+    }
+}
+
+function check_jawaban_kuesioner_text($pertanyaan_id, $id_akses_materi)
+{
+    $ci = get_instance();
+
+    $result = $ci->db->get_where('pilih_jawaban_kuesioner', ['id_pertanyaan' => $pertanyaan_id, 'id_akses_kuesioner' => $id_akses_materi])->row_array();
+    if ($result) {
+        return $result['jawaban'];
+    }
+}

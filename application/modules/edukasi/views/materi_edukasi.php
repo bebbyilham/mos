@@ -7,7 +7,7 @@
                       <h6 class="h2 text-white d-inline-block mb-0"><?= $title; ?></h6>
                   </div>
                   <div class="col-lg-6 col-5 text-right">
-                      <button type="button" id="tambah_akses_materi" class="btn btn-sm btn-neutral">Tambah</button>
+                      <!-- <button type="button" id="tambah_akses_materi" class="btn btn-sm btn-neutral">Tambah</button> -->
                   </div>
               </div>
               <!-- Card stats -->
@@ -40,8 +40,8 @@
                                       <th style="width: 5%;">No.</th>
                                       <th style="width: 5%;"></th>
                                       <th style="width: 25%;">Materi</th>
-                                      <th style="width: 25%;">Waktu Akses</th>
-                                      <th style="width: 10%;">Status</th>
+                                      <!-- <th style="width: 25%;">Waktu Akses</th>
+                                      <th style="width: 10%;">Status</th> -->
                                   </tr>
                               </thead>
                           </table>
@@ -80,6 +80,23 @@
               </div>
           </div>
       </div>
+      <div class="modal fade" id="modal_info_edukasi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4 class="modal-title text-primary"></h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="data_info">
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
       <script>
           $(document).ready(function() {
               $('#loading').hide();
@@ -90,7 +107,7 @@
                   "pageLength": 25,
                   "order": [],
                   "ajax": {
-                      "url": "<?php echo base_url(); ?>edukasi/tabelkontenedukasi",
+                      "url": "<?php echo base_url(); ?>edukasi/tabeledukasi",
                       "type": "POST",
                       "data": function(data) {
                           data.id_user = <?= $user['id_user']; ?>
@@ -135,6 +152,34 @@
                   var id_akses_materi = $(this).attr('id');
                   window.open('<?= base_url(); ?>edukasi/aksesmateri/' + id_akses_materi);
               });
+
+              // info konten
+              $(document).on('click', '.infoedukasi', function() {
+                  var id = $(this).attr('id');
+                  $('#modal_info_edukasi').modal('show');
+                  $(".data_info").html("");
+
+
+                  $.ajax({
+                      url: '<?php echo base_url(); ?>edukasi/infoedukasi',
+                      method: 'POST',
+                      data: {
+                          id: id
+                      },
+                      dataType: 'JSON',
+                      success: function(data) {
+                          $('.modal-title').text(data.judul);
+                          $('.data_info').append(`
+                            <div class="p-2">
+                            <div class="text-center">` + data.link + `</div>
+                            <div class="text-center"><h6>` + data.keterangan + `</h6></div>
+                               <div>` + data.description + `</div>
+                               </div>
+                            `);
+                      }
+                  });
+              });
+
 
               //submit image
               $(document).on('submit', '#form_akses_materi', function(event) {
