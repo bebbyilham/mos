@@ -1457,26 +1457,14 @@ class Pasien extends MX_Controller
             $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
             if ($row->status == 'aktif') {
                 $sub_array[] = '
-                <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="badge badge-primary">' . $row->status . '</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
-                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
-                        </div>
-                </div>';
+                        </a>';
             } else {
                 $sub_array[] = '
-                <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <span class="badge badge-success">' . $row->status . '</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                            <a id="' . $row->id . '" status="aktif" class="dropdown-item ubahstatus">Aktif</a>
-                            <a id="' . $row->id . '" status="selesai" class="dropdown-item ubahstatus">Selesai</a>
-                        </div>
-                </div>';
+                        </a>';
             }
 
             $data[] = $sub_array;

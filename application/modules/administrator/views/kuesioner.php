@@ -38,7 +38,7 @@
                               <thead>
                                   <tr>
                                       <th style="width: 5%;">No.</th>
-                                      <th style="width: 25%;">Edukasi</th>
+                                      <th style="width: 25%;">Keterangan</th>
                                       <th style="width: 40%;">Deskripsi</th>
                                       <th style="width: 10%;">Status</th>
                                       <th style="width: 10%;">Tanggal</th>

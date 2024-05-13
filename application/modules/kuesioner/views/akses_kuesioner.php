@@ -69,11 +69,7 @@
                             $qLe = $this->db->query($queryListEdukasi)->result_array();
                             ?>
                           <?php foreach ($qLe as $l) : ?>
-                              <?php if ($l['jenis'] == 'video') : ?>
-                                  <?php echo $l['link'] ?>
-                              <?php else : ?>
 
-                              <?php endif; ?>
                               <p> <?php echo $l['keterangan']; ?></p>
 
                               <?php

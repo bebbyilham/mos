@@ -3210,7 +3210,7 @@ class Administrator extends MX_Controller
             $alphabet_letter = chr($str);
             $sub_array[] = $no;
 
-            $sub_array[] = "<b>" . $alphabet_letter . '. ' . $row->jawaban . "</b>";
+            $sub_array[] = "<b>" .  $row->jawaban . "</b>";
             $str++;
 
             if ($row->status == 'aktif') {
