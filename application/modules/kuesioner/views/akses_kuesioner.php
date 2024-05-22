@@ -91,7 +91,7 @@
                                 FROM pertanyaan_kuesioner 
 
                                 WHERE pertanyaan_kuesioner.id_list_kuesioner = $konten_id
-                                ORDER BY pertanyaan_kuesioner.id ASC
+                                ORDER BY pertanyaan_kuesioner.urutan ASC
                                 ";
                                 $pert = $this->db->query($queryPertanyaan)->result_array();
                                 // $no_pertanyaan = 0;
