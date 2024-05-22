@@ -1,6 +1,7 @@
   <?php
     // $role_id = $this->session->userdata('role_id');
     $queryEdukasi = "SELECT kuesioner.id AS id_kuesioner,
+                            kuesioner.description,
                             kuesioner.keterangan
                             -- list_kuesioner.link,
                             -- list_kuesioner.id AS id_kuesioner
@@ -53,6 +54,7 @@
                   <div class="card-body">
                       <?php foreach ($edk as $e) : ?>
                           <h3> <?php echo $e['keterangan']; ?></h3>
+                          <p><?php echo $e['description']; ?></p>
                           <hr>
 
                           <?php
