@@ -44,7 +44,11 @@
           <div class="col">
               <div class="card shadow-sm">
                   <div class="card-header">
-                      <h3 class="card-title">Kuesioner Demografi </h3>
+                      <h3 class="card-title">Kuesioner</h3>
+                      <!-- <p>Petunjuk Pengisian :</p>
+                      <p>1. Bacalah dengan cermat dan teliti pada setiap item pertanyaan</p>
+                      <p>2. Pilihlah salah satu jawaban yang menurut Bapak/Ibu/Saudara/i paling sesuai dengan kondisi yang dialami</p>
+                      <p>3. Isilah kolom yang tersedia dengan jawaban yang benar dan sesuai</p> -->
                   </div>
                   <div class="card-body">
                       <?php foreach ($edk as $e) : ?>

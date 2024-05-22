@@ -76,8 +76,8 @@ class Terapi extends MX_Controller
             $no++;
             $sub_array = array();
             $sub_array[] = $no;
-            $sub_array[] = '<a href="#" class="fa fa-pen-square fa-lg ml-2 mr-2 text-primary akses_terapi" link="' . $row->link . '" id="' . $row->id . '" title="akses"></a>';
-            $sub_array[] = '<span id="' . $row->id . '">' . $row->keterangan . "</span><br>" . strtoupper("$row->jenis");
+            $sub_array[] = '<a href="#" class="fa fa-pen-square fa-lg ml-2 mr-2 text-primary akses_terapi" id="' . $row->id . '" title="akses"></a>';
+            $sub_array[] = strtoupper("$row->jenis");
             $sub_array[] = substr($row->keterangan, 0, 100);
 
             $sub_array[] = '<span href="#" class="status badge badge-primary" title="Diunggah" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span>';
@@ -93,6 +93,19 @@ class Terapi extends MX_Controller
             "recordsFiltered"     => $this->Terapi_model->get_filtered_data_list_terapi(),
             "data"                => $data
         );
+        echo json_encode($output);
+    }
+
+    public function infoterapi()
+    {
+        $output = array();
+        $data = $this->Terapi_model->fetch_single_konten($_POST['id']);
+
+        foreach ($data as $row) {
+            $output['jenis'] = $row->jenis;
+            $output['link'] = $row->link;
+            $output['keterangan'] = $row->keterangan;
+        }
         echo json_encode($output);
     }
 }

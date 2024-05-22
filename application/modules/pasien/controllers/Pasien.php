@@ -1541,7 +1541,7 @@ class Pasien extends MX_Controller
             $sub_array = array();
             $sub_array[] = $no;
 
-            $sub_array[] = "<b>" . $row->keterangan . "</b>";
+            $sub_array[] = "<b>" . $row->jenis . " - " . $row->keterangan . "</b>";
             $sub_array[] = '<span href="#" class="status badge badge-primary" title="waktu akses" >' . $row->created_at . '</span><br>' . '<span href="#" class="status badge badge-info" title="Diperbarui" >' . $row->updated_at . '</span><br>';
             if ($row->status == 'aktif') {
                 $sub_array[] = '

@@ -59,5 +59,13 @@
         {
             $this->db->insert('akses_terapi', $data);
         }
+
+        public function fetch_single_konten($id)
+        {
+            $this->db->where('list_terapi.id', $id);
+            // $this->db->join('list_konten_edukasi', 'list_konten_edukasi.id_edukasi = konten_edukasi.id', 'LEFT');
+            $query = $this->db->get('list_terapi');
+            return $query->result();
+        }
     }
     ?>

@@ -21,14 +21,18 @@
 
         public function fetch_kuesioner_pretest()
         {
-            $this->db->where('tipe', 0);
+            $tipe = array('0', '3');
+            // $this->db->where('tipe', 0);
+            $this->db->where_in('tipe',  $tipe);
             $query = $this->db->get('kuesioner');
             return $query->result();
         }
 
         public function fetch_kuesioner_posttest()
         {
-            $this->db->where('tipe', 1);
+            $tipe = array('1', '3');
+            // $this->db->where('tipe', 1);
+            $this->db->where_in('tipe',  $tipe);
             $query = $this->db->get('kuesioner');
             return $query->result();
         }
@@ -44,16 +48,19 @@
         var $order_columnKE = array(null, 'metode', null, 'status', 'created_at', null);
         public function make_query_akses_kuesioner()
         {
+            $tipe = array($_POST['tipe'], '3');
+            // $this->db->where('tipe', 0);
             $this->db->select('
-                akses_kuesioner.id,
-                akses_kuesioner.status,
-                akses_kuesioner.created_at,
-                akses_kuesioner.updated_at,
-                kuesioner.keterangan,
-                kuesioner.tipe
+            akses_kuesioner.id,
+            akses_kuesioner.status,
+            akses_kuesioner.created_at,
+            akses_kuesioner.updated_at,
+            kuesioner.keterangan,
+            kuesioner.tipe
             ');
             $this->db->where('id_user', $_POST['id_user']);
-            $this->db->where('kuesioner.tipe', $_POST['tipe']);
+            $this->db->where_in('kuesioner.tipe',  $tipe);
+            // $this->db->where('kuesioner.tipe', $_POST['tipe']);
             $this->db->from('akses_kuesioner');
             $this->db->join('kuesioner', 'kuesioner.id = akses_kuesioner.id_kuesioner', 'LEFT');
             if (($_POST["search"]["value"])) {

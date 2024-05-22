@@ -1120,6 +1120,7 @@
             akses_terapi.status,
             akses_terapi.created_at,
             akses_terapi.updated_at,
+            list_terapi.jenis,
             list_terapi.keterangan
             ');
             $this->db->where('id_pasien', $_POST['id_pasien']);

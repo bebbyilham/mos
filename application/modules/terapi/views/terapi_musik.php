@@ -42,7 +42,7 @@
                                       <th style="width: 5%;">No.</th>
                                       <th style="width: 5%;"></th>
                                       <th style="width: 25%;">Terapi</th>
-                                      <th style="width: 25%;">Diunggah</th>
+                                      <th style="width: 25%;">Keterangan</th>
                                   </tr>
                               </thead>
                           </table>
@@ -51,36 +51,23 @@
               </div>
           </div>
       </div>
-      <!-- Modal Create User -->
-      <!-- <div class="modal fade" id="modal_akses_target" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
+      <div class="modal fade" id="modal_info_edukasi" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
-                      <h4 class="modal-title text-primary"></h4>
+                      <h4 class="modal-title text-primary text-uppercase"></h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <form method="post" id="form_akses_target">
-                      <div class="modal-body">
-                          <div class="form-group">
-                              <input type="hidden" name="id_user" id="id_user" value="<?php echo $user['id_user'] ?>">
-                              <input type="hidden" name="id_pasien" id="id_pasien" value="<?php echo $user['pasien_id'] ?>">
-                              <label class="form-control-label" for="input-last-name">Target</label>
-                              <div class="input-group">
-                                  <select class="form-control rounded-0 selecpicker" id="target" name="target" data-live-search="true"></select>
-                              </div>
-                          </div>
+                  <div class="modal-body">
+                      <div class="data_info">
+
                       </div>
-                      <div class="modal-footer">
-                          <div class="text-right">
-                              <button type="submit" class="btn btn-primary ">Simpan</button>
-                          </div>
-                      </div>
-                  </form>
+                  </div>
               </div>
           </div>
-      </div> -->
+      </div>
       <script>
           $(document).ready(function() {
               $('#loading').hide();
@@ -143,15 +130,38 @@
                                   id_pasien: id_pasien,
                               },
                               success: function(data) {
-                                  // console.log(data);
-                                  Swal.fire({
-                                      icon: 'success',
-                                      title: 'Status berhasil diubah',
-                                      showConfirmButton: false,
-                                      timer: 1500
-                                  })
-                                  dataTable.ajax.reload();
-                                  window.open(link);
+                                  //   // console.log(data);
+                                  //   Swal.fire({
+                                  //       icon: 'success',
+                                  //       title: 'Status berhasil diubah',
+                                  //       showConfirmButton: false,
+                                  //       timer: 1500
+                                  //   })
+                                  //   dataTable.ajax.reload();
+                                  //   window.open(link);
+                                  // info konten
+                                  $('#modal_info_edukasi').modal('show');
+                                  $(".data_info").html("");
+
+
+                                  $.ajax({
+                                      url: '<?php echo base_url(); ?>terapi/infoterapi',
+                                      method: 'POST',
+                                      data: {
+                                          id: id
+                                      },
+                                      dataType: 'JSON',
+                                      success: function(data) {
+                                          $('.modal-title').text(data.jenis);
+                                          $('.data_info').append(`
+                                                <div class="p-2">
+                                                <div class="text-center">` + data.link + `</div>
+                                                <div class="text-center"><h6>` + data.keterangan + `</h6></div>
+                                                </div>
+                                                `);
+                                      }
+                                  });
+
                               }
                           });
                       }

@@ -44,7 +44,7 @@
           <div class="col">
               <div class="card shadow-sm">
                   <div class="card-header">
-                      <h3 class="card-title">Akses Materi</h3>
+                      <h3 class="card-title">Akses Selfcontrol</h3>
                   </div>
                   <div class="card-body">
                       <?php foreach ($edk as $e) : ?>

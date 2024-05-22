@@ -67,8 +67,9 @@
                               <label class="form-control-label" for="input-last-name">Jenis</label>
                               <div class="input-group">
                                   <select class="custom-select rounded-0" id="jenis" name="jenis">
-                                      <option value="video">Video</option>
-                                      <option value="Gambar">Gambar</option>
+                                      <option value="musik">Musik</option>
+                                      <option value="relaksasi">Relaksasi</option>
+                                      <option value="aktivitas latihan fisik">Aktivitas Latihan fisik</option>
                                   </select>
                               </div>
                           </div>
@@ -153,7 +154,7 @@
                   }).then((result) => {
                       if (result.isConfirmed) {
                           $.ajax({
-                              url: '<?php echo base_url(); ?>pesanreminder/tabelreminder',
+                              url: '<?php echo base_url(); ?>administrator/simpanlistterapi',
                               method: 'POST',
                               data: new FormData(this),
                               contentType: false,
@@ -161,7 +162,7 @@
                               success: function(data) {
                                   Swal.fire({
                                       icon: 'success',
-                                      title: 'Foto berhasil ditambahkan',
+                                      title: 'Data berhasil ditambahkan',
                                       showConfirmButton: false,
                                       timer: 2000
                                   })
