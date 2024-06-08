@@ -230,7 +230,7 @@
           var notelp3 = $('#notelp3').val()
           var status = '1';
 
-          if (nama == '' || nik == '' || jeniskelamin == '' || tanggallahir == '' || notelp1 == '' || notelp2 == '' || nama_pj == '' || notelp3 == '') {
+          if (nama == '') {
             console.log('data belum lengkap');
             Swal.fire({
               icon: 'error',
