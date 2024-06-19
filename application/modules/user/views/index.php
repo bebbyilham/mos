@@ -44,5 +44,30 @@
                       <p class="card-text"><small class="text-muted"></small></p>
                   </div>
               </div>
+              <div class="row  p-2">
+                  <div class="col-6">
+                      <div class="card">
+                          <!-- Card image -->
+                          <img class="card-img-top" src="<?= base_url('assets/img/'); ?>alur_mos.png" alt="Image placeholder">
+                          <!-- Card body -->
+                          <div class="card-body">
+                              <small class="text-muted">Gambar Alur MOS</small>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-6">
+                      <div class="card">
+                          <!-- Card image -->
+                          <div class="embed-responsive embed-responsive-21by9">
+                              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/bJP8FuwkJb8?si=9ZcWOvB6PGbOViy4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                          </div>
+
+                          <!-- Card body -->
+                          <div class="card-body">
+                              <small class="text-muted">Video Alur Program MOS</small>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </div>
       </div>
