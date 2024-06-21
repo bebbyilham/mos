@@ -119,7 +119,7 @@
                       console.log(data);
                       var html = '';
                       var i;
-                      html += '<option selected value="0">Pilih Target</option>';
+                      //   html += '<option selected value="0">Pilih Target</option>';
                       for (i = 0; i < data.length; i++) {
                           html += '<option value="' + data[i].id + '">' + data[i].target + '</option>';
                       }
